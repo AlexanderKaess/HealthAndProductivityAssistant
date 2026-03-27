@@ -58,6 +58,8 @@ set_target_properties(HealthAndProductivityAssistant PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+add_subdirectory(logs/)
+
 include(GNUInstallDirs)
 install(TARGETS HealthAndProductivityAssistant
     BUNDLE DESTINATION .
