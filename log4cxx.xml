@@ -15,9 +15,16 @@
 		<param name="File" value="app.log"/>
 		<param name="MaxFileSize" value="5MB"/>
 		<param name="MaxBackupIndex" value="3"/>
-
+		<!-- Format:
+			 %d = Datum/Uhrzeit
+			 %c = Loggername
+			 %F = Datei
+			 %L = Zeile
+			 %m = Message
+			 %n = Newline
+		-->
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{ISO8601} %-5p %c %F:%L - %m%n"/>
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} [%c] %F:%L - %m%n"/>
 		</layout>
 	</appender>
 
