@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<!-- Datei-Logger -->
-	<appender name="file" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="${LOG_DIR}/app.log"/>
-		<param name="MaxFileSize" value="5MB"/>
-		<param name="MaxBackupIndex" value="5"/>
+	<!-- Async Appender -->
+	<appender name="ASYNC" class="org.apache.log4j.AsyncAppender">
+		<param name="BufferSize" value="1024"/>
 
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				   value="%d{ISO8601} [%t] %-5p %c - %m%n"/>
-		</layout>
+		<appender-ref ref="FILE"/>
 	</appender>
 
-	<!-- Async Logger -->
-	<appender name="async" class="org.apache.log4j.AsyncAppender">
-		<param name="BufferSize" value="1024"/>
-		<param name="Blocking" value="false"/>
-		<appender-ref ref="file"/>
+	<!-- File Appender -->
+	<appender name="FILE" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="app.log"/>
+		<param name="MaxFileSize" value="5MB"/>
+		<param name="MaxBackupIndex" value="3"/>
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p %c %F:%L - %m%n"/>
+		</layout>
 	</appender>
 
 	<!-- Root Logger -->
 	<root>
 		<priority value="debug"/>
-		<appender-ref ref="async"/>
+		<appender-ref ref="ASYNC"/>
 	</root>
 
 </log4j:configuration>

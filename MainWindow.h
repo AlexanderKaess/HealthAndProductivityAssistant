@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <log4cxx/logger.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,4 +19,5 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    log4cxx::LoggerPtr logger;
 };

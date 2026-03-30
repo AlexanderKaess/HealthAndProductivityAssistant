@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.16)
 
 project(HealthAndProductivityAssistant VERSION 0.1 LANGUAGES CXX)
 
+message(STATUS "Top level source directory: ${CMAKE_SOURCE_DIR}")
+message(STATUS "Top level build directory: ${CMAKE_BINARY_DIR}")
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -55,8 +58,6 @@ set_target_properties(HealthAndProductivityAssistant PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-add_subdirectory(logs/)
-
 include(GNUInstallDirs)
 install(TARGETS HealthAndProductivityAssistant
     BUNDLE DESTINATION .
@@ -68,11 +69,10 @@ if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(HealthAndProductivityAssistant)
 endif()
 
-message(STATUS "Source: ${CMAKE_SOURCE_DIR}/log4cxx.xml")
-message(STATUS "Target: ${CMAKE_BINARY_DIR}/log4cxx.xml")
-
+message(STATUS "Source log4cxx.xml file: ${CMAKE_SOURCE_DIR}/log4cxx.xml")
+message(STATUS "Target log4cxx.xml file: ${CMAKE_BINARY_DIR}/HealthAndProductivityAssistant.app/Contents/MacOS/log4cxx.xml")
 configure_file(
     ${CMAKE_SOURCE_DIR}/log4cxx.xml
-    ${CMAKE_BINARY_DIR}/log4cxx.xml
+    ${CMAKE_BINARY_DIR}/HealthAndProductivityAssistant.app/Contents/MacOS/log4cxx.xml
     COPYONLY
 )
