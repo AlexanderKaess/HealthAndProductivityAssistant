@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     log4cxx::xml::DOMConfigurator::configure(configPath.toStdString());
 
     // Logger erstellen
-    log4cxx::LoggerPtr logger{log4cxx::Logger::getLogger("HealthLogger")};
+    log4cxx::LoggerPtr logger{log4cxx::Logger::getLogger("HealthLogger.main")};
     LOG4CXX_INFO(logger, "Program HealthAndProductivityAssistant started...");
     LOG4CXX_INFO(logger, "Working dir:" << QDir::currentPath().toStdString());
 

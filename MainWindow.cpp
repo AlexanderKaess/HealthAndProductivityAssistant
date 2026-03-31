@@ -4,7 +4,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , logger(log4cxx::Logger::getLogger("HealthLogger"))
+    , logger(log4cxx::Logger::getLogger("HealthLogger.MainWindow"))
 
 {
     ui->setupUi(this);
