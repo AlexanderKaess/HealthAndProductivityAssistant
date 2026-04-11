@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 
     // Logger erstellen
     log4cxx::LoggerPtr logger{log4cxx::Logger::getLogger("HealthLogger.main")};
+    LOG4CXX_INFO(logger, "----------");
     LOG4CXX_INFO(logger, "Program HealthAndProductivityAssistant started...");
     LOG4CXX_INFO(logger, "Working dir:" << QDir::currentPath().toStdString());
 

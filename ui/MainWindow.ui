@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>903</width>
+    <height>682</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,11 +23,17 @@
       <height>521</height>
      </rect>
     </property>
-    <widget class="QWidget" name="tab">
+    <property name="tabPosition">
+     <enum>QTabWidget::TabPosition::North</enum>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="overviewTab">
      <attribute name="title">
-      <string>Tab 1</string>
+      <string>overview</string>
      </attribute>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="addTimerPushButton">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -36,11 +42,14 @@
         <height>24</height>
        </rect>
       </property>
+      <property name="layoutDirection">
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
+      </property>
       <property name="text">
-       <string>PushButton</string>
+       <string>add timer</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="removeTimerPushButton">
       <property name="geometry">
        <rect>
         <x>130</x>
@@ -50,7 +59,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>PushButton</string>
+       <string>remove timer</string>
       </property>
      </widget>
      <widget class="QListWidget" name="listWidget">
@@ -89,9 +98,9 @@
       </item>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_2">
+    <widget class="QWidget" name="settingsTab">
      <attribute name="title">
-      <string>Tab 2</string>
+      <string>settings</string>
      </attribute>
     </widget>
    </widget>
@@ -101,7 +110,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>903</width>
      <height>24</height>
     </rect>
    </property>

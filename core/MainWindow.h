@@ -17,6 +17,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_addTimerPushButton_clicked();
+
+    void on_removeTimerPushButton_clicked();
+
+    void on_tabWidget_currentChanged(int index);
+
 private:
     Ui::MainWindow *ui;
     log4cxx::LoggerPtr logger;

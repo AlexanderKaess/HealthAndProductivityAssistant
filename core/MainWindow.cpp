@@ -16,3 +16,21 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_addTimerPushButton_clicked()
+{
+    LOG4CXX_INFO(logger, "add timer button clicked");
+}
+
+void MainWindow::on_removeTimerPushButton_clicked()
+{
+    LOG4CXX_INFO(logger, "remove timer button clicked");
+}
+
+void MainWindow::on_tabWidget_currentChanged(int index)
+{
+    LOG4CXX_INFO(logger, "Index of tab: " << ui->tabWidget->currentIndex());
+    LOG4CXX_INFO(logger,
+                 "Index of tab: " << ui->tabWidget->tabText(ui->tabWidget->currentIndex())
+                                         .toStdString());
+}
