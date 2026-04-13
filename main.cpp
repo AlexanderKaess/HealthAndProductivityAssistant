@@ -1,12 +1,6 @@
 #include <QApplication>
-#include <QDebug>
 #include <QDir>
-#include <QIcon>
-#include <QStandardPaths>
 #include "MainWindow.h"
-#include <log4cxx/helpers/properties.h>
-#include <log4cxx/helpers/system.h>
-#include <log4cxx/logger.h>
 #include <log4cxx/xml/domconfigurator.h>
 
 int main(int argc, char *argv[])
