@@ -1,17 +1,21 @@
 #include <QApplication>
+#include <QDebug>
 #include <QDir>
+#include <QIcon>
 #include <QStandardPaths>
+#include "MainWindow.h"
 #include <log4cxx/helpers/properties.h>
 #include <log4cxx/helpers/system.h>
 #include <log4cxx/logger.h>
 #include <log4cxx/xml/domconfigurator.h>
 
-#include <QDebug>
-#include "MainWindow.h"
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    QFileInfo info(__FILE__);
+    QString parentPath = info.path();
+    a.setWindowIcon(QIcon(parentPath + "/ui/AppIcon_small.png"));
 
     // Konfiguration laden
     QString configPath = QCoreApplication::applicationDirPath() + "/log4cxx.xml";
