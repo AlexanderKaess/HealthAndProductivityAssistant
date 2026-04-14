@@ -3,6 +3,8 @@ message("add core files to sources variable")
 set(CORE_SOURCES
 	MainWindow.cpp
 	MainWindow.h
+	TimerDialog.h
+	TimerDialog.cpp
 )
 
 add_library(corelib ${CORE_SOURCES})

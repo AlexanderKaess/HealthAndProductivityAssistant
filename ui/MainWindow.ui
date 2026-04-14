@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>903</width>
-    <height>682</height>
+    <width>1000</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>30</y>
-      <width>711</width>
-      <height>521</height>
+      <x>20</x>
+      <y>10</y>
+      <width>961</width>
+      <height>631</height>
      </rect>
     </property>
     <property name="tabPosition">
@@ -67,8 +67,8 @@
        <rect>
         <x>10</x>
         <y>70</y>
-        <width>691</width>
-        <height>111</height>
+        <width>931</width>
+        <height>271</height>
        </rect>
       </property>
       <item>
@@ -110,7 +110,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>903</width>
+     <width>1000</width>
      <height>24</height>
     </rect>
    </property>

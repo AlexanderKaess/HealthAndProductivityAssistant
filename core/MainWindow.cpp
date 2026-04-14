@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "../ui/ui_MainWindow.h"
+#include "TimerDialog.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,6 +21,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_addTimerPushButton_clicked()
 {
     LOG4CXX_INFO(logger, "add timer button clicked");
+    TimerDialog *timerDialog = new TimerDialog(this, "Hello from MainWindow");
+    timerDialog->show();
 }
 
 void MainWindow::on_removeTimerPushButton_clicked()

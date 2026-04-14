@@ -25,6 +25,7 @@ add_subdirectory(unitTests/)
 qt_add_executable(HealthAndProductivityAssistant
     MANUAL_FINALIZATION
     main.cpp
+
 )
 
 target_link_libraries(HealthAndProductivityAssistant PRIVATE
