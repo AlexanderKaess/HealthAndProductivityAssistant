@@ -18,11 +18,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_addTimerPushButton_clicked();
-
-    void on_removeTimerPushButton_clicked();
-
-    void on_tabWidget_currentChanged(int index);
+    void onPomodoroClicked();
 
 private:
     Ui::MainWindow *ui;

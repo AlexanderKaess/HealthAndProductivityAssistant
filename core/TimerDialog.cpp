@@ -1,14 +1,18 @@
 #include "TimerDialog.h"
 #include "../ui/ui_TimerDialog.h"
 
-TimerDialog::TimerDialog(QWidget *parent, QString message)
+TimerDialog::TimerDialog(TimerType type, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::TimerDialog)
     , logger(log4cxx::Logger::getLogger("HealthLogger.TimerDialog"))
+    , currentType(type)
+    , isRunning(false)
 {
     LOG4CXX_INFO(logger, "TimerDialog started...");
     ui->setupUi(this);
-    ui->label->setText(message);
+
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &TimerDialog::updateTimer);
 }
 
 TimerDialog::~TimerDialog()
@@ -16,14 +20,4 @@ TimerDialog::~TimerDialog()
     delete ui;
 }
 
-void TimerDialog::on_okPushButton_clicked()
-{
-    LOG4CXX_INFO(logger, "ok button clicked");
-    close();
-}
-
-void TimerDialog::on_cancelPushButton_clicked()
-{
-    LOG4CXX_INFO(logger, "cancel button clicked");
-    close();
-}
+void TimerDialog::updateTimer() {}

@@ -11,6 +11,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("HealthAndProductivityAssistant");
     LOG4CXX_INFO(logger, "Mainwindow started...");
+
+    // Connect buttons to slots
+    connect(ui->pomodoroPushButton, &QPushButton::clicked, this, &MainWindow::onPomodoroClicked);
+
+    statusBar()->showMessage("ready");
 }
 
 MainWindow::~MainWindow()
@@ -18,22 +23,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_addTimerPushButton_clicked()
+void MainWindow::onPomodoroClicked()
 {
-    LOG4CXX_INFO(logger, "add timer button clicked");
-    TimerDialog *timerDialog = new TimerDialog(this, "Hello from MainWindow");
-    timerDialog->show();
-}
-
-void MainWindow::on_removeTimerPushButton_clicked()
-{
-    LOG4CXX_INFO(logger, "remove timer button clicked");
-}
-
-void MainWindow::on_tabWidget_currentChanged(int index)
-{
-    LOG4CXX_INFO(logger, "Index of tab: " << ui->tabWidget->currentIndex());
-    LOG4CXX_INFO(logger,
-                 "Index of tab: " << ui->tabWidget->tabText(ui->tabWidget->currentIndex())
-                                         .toStdString());
+    TimerDialog dialog(TimerDialog::Pomodoro, this);
+    dialog.exec();
 }
