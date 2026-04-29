@@ -18,7 +18,12 @@ public:
     ~MainWindow();
 
 private slots:
-    void onPomodoroClicked();
+    void onPomodoroTimerClicked();
+    void onStayHydratedClicked();
+    void onFreshAirTimerClicked();
+    void onWorkingHourTimerClicked();
+    void onBreakTimerClicked();
+    void onMovementTimerClicked();
 
 private:
     Ui::MainWindow *ui;

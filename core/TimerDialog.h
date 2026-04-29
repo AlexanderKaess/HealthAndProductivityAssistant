@@ -15,8 +15,12 @@ class TimerDialog : public QDialog
 
 public:
     enum TimerType {
-        Pomodoro,
-    };
+        POMODORO,
+        STAYHYDRATET,
+        FRESHAIR,
+        WORKINGHOUR,
+        BREAK,
+        MOVEMENT };
 
     TimerDialog(TimerType type, QWidget *parent = nullptr);
     ~TimerDialog();
