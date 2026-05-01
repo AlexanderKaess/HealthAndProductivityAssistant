@@ -2,12 +2,15 @@
 
 #include <QMainWindow>
 #include <log4cxx/logger.h>
+#include <TimerDialog.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
+
+// class TimerDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -25,7 +28,16 @@ private slots:
     void onBreakTimerClicked();
     void onMovementTimerClicked();
 
+    void onTimerFinished(TimerDialog::TimerType type);
+    void refreshActiveTimers();
+
 private:
+    void openTimerDialog(TimerDialog::TimerType &timerType);
+
     Ui::MainWindow *ui;
     log4cxx::LoggerPtr logger;
+    QList<TimerDialog*> activeTimers;
+    int completedCount = 0;
+
+
 };

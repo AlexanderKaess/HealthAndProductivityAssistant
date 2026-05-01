@@ -6,7 +6,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , logger(log4cxx::Logger::getLogger("HealthLogger.MainWindow"))
-
 {
     ui->setupUi(this);
     setWindowTitle("HealthAndProductivityAssistant");
@@ -20,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->breakPushButton, &QPushButton::clicked, this, &MainWindow::onBreakTimerClicked);
     connect(ui->movementPushButton,&QPushButton::clicked,this,&MainWindow::onMovementTimerClicked);
 
-    statusBar()->showMessage("ready");
+    statusBar()->showMessage("ready", 3000);
 }
 
 MainWindow::~MainWindow()
@@ -63,4 +62,44 @@ void MainWindow::onMovementTimerClicked() {
     LOG4CXX_INFO(logger, "TimerDialog::MOVEMENT started...");
     TimerDialog dialog(TimerDialog::MOVEMENT, this);
     dialog.exec();
+}
+
+void MainWindow::onTimerFinished(TimerDialog::TimerType type){
+    completedCount++;
+    refreshActiveTimers();
+}
+
+void MainWindow::refreshActiveTimers() {
+    ui->activeCountLabel->setText(QString("Aktive Timer: %1").arg(activeTimers.size()));
+    ui->completedCountLabel->setText(QString("Abgeschlossen: %1").arg(completedCount));
+
+    ui->activeTimersTable->setRowCount(activeTimers.size());
+    for (int index = 0; index < activeTimers.size(); ++index) {
+        TimerDialog *timerDialog = activeTimers[index];
+        if (!timerDialog) {
+            continue;
+        }
+
+        ui->activeTimersTable->setItem(index, 0, new QTableWidgetItem(timerDialog->timerTypeName()));
+        ui->activeTimersTable->setItem(index, 1, new QTableWidgetItem(timerDialog->formattedTime()));
+        ui->activeTimersTable->setItem(index, 2, new QTableWidgetItem(timerDialog->isTimerRunning() ? "Läuft" : "Pausiert"));
+
+        if (!ui->activeTimersTable->cellWidget(index, 3)) {
+            QPushButton *stopBtn = new QPushButton("Stop");
+            stopBtn->setStyleSheet("background-color:#e74c3c;color:white;border-radius:3px;padding:4px;");
+            connect(stopBtn, &QPushButton::clicked, timerDialog, &QDialog::close);
+            ui->activeTimersTable->setCellWidget(index, 3, stopBtn);
+        }
+    }
+}
+
+void MainWindow::openTimerDialog(TimerDialog::TimerType &timerType) {
+    TimerDialog *dialog = new TimerDialog(timerType, this);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    activeTimers.append(dialog);
+
+    connect(dialog, &TimerDialog::timerFinished, this, &MainWindow::onTimerFinished);
+
+
+
 }
