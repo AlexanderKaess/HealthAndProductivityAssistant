@@ -30,8 +30,7 @@ MainWindow::~MainWindow()
 void MainWindow::onPomodoroTimerClicked()
 {
     LOG4CXX_INFO(logger, "TimerDialog::POMODORO started...");
-    TimerDialog dialog(TimerDialog::POMODORO, this);
-    dialog.exec();
+    openTimerDialog(TimerDialog::TimerType::POMODORO);
 }
 
 void MainWindow::onStayHydratedClicked() {
@@ -70,8 +69,9 @@ void MainWindow::onTimerFinished(TimerDialog::TimerType type){
 }
 
 void MainWindow::refreshActiveTimers() {
-    ui->activeCountLabel->setText(QString("Aktive Timer: %1").arg(activeTimers.size()));
-    ui->completedCountLabel->setText(QString("Abgeschlossen: %1").arg(completedCount));
+    LOG4CXX_INFO(logger, "Refresh active timer ...");
+    ui->activeCountLabel->setText(QString("active timer: %1").arg(activeTimers.size()));
+    ui->completedCountLabel->setText(QString("done: %1").arg(completedCount));
 
     ui->activeTimersTable->setRowCount(activeTimers.size());
     for (int index = 0; index < activeTimers.size(); ++index) {
@@ -82,10 +82,10 @@ void MainWindow::refreshActiveTimers() {
 
         ui->activeTimersTable->setItem(index, 0, new QTableWidgetItem(timerDialog->timerTypeName()));
         ui->activeTimersTable->setItem(index, 1, new QTableWidgetItem(timerDialog->formattedTime()));
-        ui->activeTimersTable->setItem(index, 2, new QTableWidgetItem(timerDialog->isTimerRunning() ? "Läuft" : "Pausiert"));
+        ui->activeTimersTable->setItem(index, 2, new QTableWidgetItem(timerDialog->isTimerRunning() ? "running" : "break"));
 
         if (!ui->activeTimersTable->cellWidget(index, 3)) {
-            QPushButton *stopBtn = new QPushButton("Stop");
+            QPushButton *stopBtn = new QPushButton("stop");
             stopBtn->setStyleSheet("background-color:#e74c3c;color:white;border-radius:3px;padding:4px;");
             connect(stopBtn, &QPushButton::clicked, timerDialog, &QDialog::close);
             ui->activeTimersTable->setCellWidget(index, 3, stopBtn);
@@ -93,13 +93,14 @@ void MainWindow::refreshActiveTimers() {
     }
 }
 
-void MainWindow::openTimerDialog(TimerDialog::TimerType &timerType) {
+void MainWindow::openTimerDialog(const TimerDialog::TimerType &timerType) {
     TimerDialog *dialog = new TimerDialog(timerType, this);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     activeTimers.append(dialog);
 
     connect(dialog, &TimerDialog::timerFinished, this, &MainWindow::onTimerFinished);
 
-
-
+    dialog->show();
+    refreshActiveTimers();
+    ui->statusbar->showMessage(dialog->timerTypeName() + " started ...", 3000);
 }

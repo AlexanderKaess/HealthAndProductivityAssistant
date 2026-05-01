@@ -32,7 +32,7 @@ private slots:
     void refreshActiveTimers();
 
 private:
-    void openTimerDialog(TimerDialog::TimerType &timerType);
+    void openTimerDialog(const TimerDialog::TimerType &timerType);
 
     Ui::MainWindow *ui;
     log4cxx::LoggerPtr logger;

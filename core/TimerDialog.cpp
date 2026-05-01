@@ -22,27 +22,30 @@ TimerDialog::~TimerDialog()
 }
 
 QString TimerDialog::timerTypeName() const {
+    QString result = "DEFAULT_TIMER";
     switch (currentType) {
-    case POMODORO:
-        return "POMODORO";
-        break;
-    case STAYHYDRATET:
-        return "STAYHYDRATET";
-        break;
-    case FRESHAIR:
-        return "FRESHAIR";
-        break;
-    case WORKINGHOUR:
-        return "WORKINGHOUR";
-        break;
-    case BREAK:
-        return "BREAK";
-        break;
-    case MOVEMENT:
-        return "MOVEMENT";
-        break;
+        case POMODORO:
+            result = "POMODORO";
+            break;
+        case STAYHYDRATET:
+            result =  "STAYHYDRATET";
+            break;
+        case FRESHAIR:
+            result =  "FRESHAIR";
+            break;
+        case WORKINGHOUR:
+            result =  "WORKINGHOUR";
+            break;
+        case BREAK:
+            result = "BREAK";
+            break;
+        case MOVEMENT:
+            result = "MOVEMENT";
+            break;
     }
-    return "TIMER";
+
+    LOG4CXX_INFO(logger, "TimerType is: " <<  result.toStdString());
+    return result;
 }
 
 QString TimerDialog::formattedTime() const {
