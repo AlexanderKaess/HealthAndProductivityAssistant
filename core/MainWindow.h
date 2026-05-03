@@ -1,8 +1,11 @@
 #pragma once
 
-#include <QMainWindow>
 #include <log4cxx/logger.h>
-#include <TimerDialog.h>
+#include <QMainWindow>
+#include <QPointer>
+#include <QList>
+
+#include "TimerDialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -33,10 +36,11 @@ private slots:
 
 private:
     void openTimerDialog(const TimerDialog::TimerType &timerType);
+    void cleanUpTimers();
 
     Ui::MainWindow *ui;
     log4cxx::LoggerPtr logger;
-    QList<TimerDialog*> activeTimers;
+    QList<QPointer<TimerDialog>> activeTimers;
     int completedCount = 0;
 
 

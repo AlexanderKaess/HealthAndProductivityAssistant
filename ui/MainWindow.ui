@@ -34,7 +34,7 @@
        <string notr="true">QTabBar::tab { padding: 10px 20px; width: 200; height: 35; font-size: 11pt; } QTabBar::tab:selected { background: #3498db; color: white; font-weight: bold; }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabTimerSelection">
        <attribute name="title">

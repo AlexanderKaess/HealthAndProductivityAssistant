@@ -1,3 +1,5 @@
+#include <QPointer>
+
 #include "MainWindow.h"
 #include "../ui/ui_MainWindow.h"
 #include "TimerDialog.h"
@@ -19,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->breakPushButton, &QPushButton::clicked, this, &MainWindow::onBreakTimerClicked);
     connect(ui->movementPushButton,&QPushButton::clicked,this,&MainWindow::onMovementTimerClicked);
 
-    statusBar()->showMessage("ready", 3000);
+    statusBar()->showMessage("ready ...", 3000);
 }
 
 MainWindow::~MainWindow()
@@ -35,32 +37,27 @@ void MainWindow::onPomodoroTimerClicked()
 
 void MainWindow::onStayHydratedClicked() {
     LOG4CXX_INFO(logger, "TimerDialog::STAYHYDRATET started...");
-    TimerDialog dialog(TimerDialog::STAYHYDRATET, this);
-    dialog.exec();
+    openTimerDialog(TimerDialog::TimerType::STAYHYDRATET);
 }
 
 void MainWindow::onFreshAirTimerClicked() {
     LOG4CXX_INFO(logger, "TimerDialog::FRESHAIR started...");
-    TimerDialog dialog(TimerDialog::FRESHAIR, this);
-    dialog.exec();
+    openTimerDialog(TimerDialog::TimerType::FRESHAIR);
 }
 
 void MainWindow::onWorkingHourTimerClicked() {
     LOG4CXX_INFO(logger, "TimerDialog::WORKINGHOUR started...");
-    TimerDialog dialog(TimerDialog::WORKINGHOUR, this);
-    dialog.exec();
+    openTimerDialog(TimerDialog::TimerType::WORKINGHOUR);
 }
 
 void MainWindow::onBreakTimerClicked() {
     LOG4CXX_INFO(logger, "TimerDialog::BREAK started...");
-    TimerDialog dialog(TimerDialog::BREAK, this);
-    dialog.exec();
+    openTimerDialog(TimerDialog::TimerType::BREAK);
 }
 
 void MainWindow::onMovementTimerClicked() {
     LOG4CXX_INFO(logger, "TimerDialog::MOVEMENT started...");
-    TimerDialog dialog(TimerDialog::MOVEMENT, this);
-    dialog.exec();
+    openTimerDialog(TimerDialog::TimerType::MOVEMENT);
 }
 
 void MainWindow::onTimerFinished(TimerDialog::TimerType type){
@@ -70,6 +67,8 @@ void MainWindow::onTimerFinished(TimerDialog::TimerType type){
 
 void MainWindow::refreshActiveTimers() {
     LOG4CXX_INFO(logger, "Refresh active timer ...");
+    cleanUpTimers();
+
     ui->activeCountLabel->setText(QString("active timer: %1").arg(activeTimers.size()));
     ui->completedCountLabel->setText(QString("done: %1").arg(completedCount));
 
@@ -94,13 +93,26 @@ void MainWindow::refreshActiveTimers() {
 }
 
 void MainWindow::openTimerDialog(const TimerDialog::TimerType &timerType) {
-    TimerDialog *dialog = new TimerDialog(timerType, this);
+    QPointer<TimerDialog> dialog = new TimerDialog(timerType, this);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     activeTimers.append(dialog);
+
+    // Remove pointer from list before Qt deletes the object
+    connect(dialog, &TimerDialog::destroyed, this, [this, dialog]() {
+        activeTimers.removeOne(dialog);
+    });
 
     connect(dialog, &TimerDialog::timerFinished, this, &MainWindow::onTimerFinished);
 
     dialog->show();
     refreshActiveTimers();
     ui->statusbar->showMessage(dialog->timerTypeName() + " started ...", 3000);
+}
+
+void MainWindow::cleanUpTimers() {
+    // remove all destroyed TimerDialogs
+    activeTimers.erase(
+        std::remove_if(activeTimers.begin(), activeTimers.end(),
+                       [](const QPointer<TimerDialog> &p){ return p.isNull();}),
+        activeTimers.end());
 }

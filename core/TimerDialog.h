@@ -1,9 +1,9 @@
 #pragma once
 
+#include <log4cxx/logger.h>
 #include <QDialog>
 #include <QTime>
 #include <QTimer>
-#include <log4cxx/logger.h>
 
 namespace Ui {
 class TimerDialog;
