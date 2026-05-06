@@ -29,7 +29,7 @@ public:
 
     const int getRemainingTime () { return remainingTimeSec; }
     bool isTimerRunning() const { return timer->isActive(); }
-
+    TimerType getTimerType ()const { return currentType; }
     QString timerTypeName() const;
     QString formattedTime() const;
 
@@ -54,6 +54,5 @@ private:
     TimerType currentType;
     QTimer *timer;
     int remainingTimeSec{};
-    bool isRunning{};
     int initialSeconds{};
 };

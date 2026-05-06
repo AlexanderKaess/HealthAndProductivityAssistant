@@ -10,7 +10,6 @@ TimerDialog::TimerDialog(TimerType type, QWidget *parent)
     , timer(new QTimer(this))
     , currentType(type)
     , remainingTimeSec(0)
-    , isRunning(false)
     , initialSeconds(0)
 {
     LOG4CXX_INFO(logger, "TimerDialog started ...");
@@ -21,6 +20,9 @@ TimerDialog::TimerDialog(TimerType type, QWidget *parent)
     setupForTimerType(type);
 
     connect(ui->startButton, &QPushButton::clicked, this, &TimerDialog::onStartClicked );
+    connect(ui->stopButton, &QPushButton::clicked, this, &TimerDialog::onStopClicked );
+    connect(ui->resetButton, &QPushButton::clicked, this, &TimerDialog::onResetClicked );
+    connect(ui->closeButton, &QPushButton::clicked, this, &TimerDialog::close);
 }
 
 TimerDialog::~TimerDialog()
