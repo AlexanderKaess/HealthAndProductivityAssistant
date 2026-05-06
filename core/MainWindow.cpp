@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowTitle("HealthAndProductivityAssistant");
-    LOG4CXX_INFO(logger, "Mainwindow started...");
+    LOG4CXX_INFO(logger, "Mainwindow started ...");
 
     // Connect buttons to slots
     connect(ui->pomodoroPushButton,&QPushButton::clicked,this,&MainWindow::onPomodoroTimerClicked);
@@ -31,32 +31,32 @@ MainWindow::~MainWindow()
 
 void MainWindow::onPomodoroTimerClicked()
 {
-    LOG4CXX_INFO(logger, "TimerDialog::POMODORO started...");
+    LOG4CXX_INFO(logger, "TimerDialog::POMODORO selected ...");
     openTimerDialog(TimerDialog::TimerType::POMODORO);
 }
 
 void MainWindow::onStayHydratedClicked() {
-    LOG4CXX_INFO(logger, "TimerDialog::STAYHYDRATET started...");
+    LOG4CXX_INFO(logger, "TimerDialog::STAYHYDRATET selected ...");
     openTimerDialog(TimerDialog::TimerType::STAYHYDRATET);
 }
 
 void MainWindow::onFreshAirTimerClicked() {
-    LOG4CXX_INFO(logger, "TimerDialog::FRESHAIR started...");
+    LOG4CXX_INFO(logger, "TimerDialog::FRESHAIR selected ...");
     openTimerDialog(TimerDialog::TimerType::FRESHAIR);
 }
 
 void MainWindow::onWorkingHourTimerClicked() {
-    LOG4CXX_INFO(logger, "TimerDialog::WORKINGHOUR started...");
+    LOG4CXX_INFO(logger, "TimerDialog::WORKINGHOUR selected ...");
     openTimerDialog(TimerDialog::TimerType::WORKINGHOUR);
 }
 
 void MainWindow::onBreakTimerClicked() {
-    LOG4CXX_INFO(logger, "TimerDialog::BREAK started...");
+    LOG4CXX_INFO(logger, "TimerDialog::BREAK selected ...");
     openTimerDialog(TimerDialog::TimerType::BREAK);
 }
 
 void MainWindow::onMovementTimerClicked() {
-    LOG4CXX_INFO(logger, "TimerDialog::MOVEMENT started...");
+    LOG4CXX_INFO(logger, "TimerDialog::MOVEMENT selected ...");
     openTimerDialog(TimerDialog::TimerType::MOVEMENT);
 }
 

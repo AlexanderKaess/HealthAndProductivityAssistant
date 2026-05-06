@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QTime>
 #include <QTimer>
+#include <QString>
+#include <QPointer>
 
 namespace Ui {
 class TimerDialog;
@@ -26,7 +28,7 @@ public:
     TimerDialog(TimerType type, QWidget *parent = nullptr);
     ~TimerDialog();
 
-    const int getRemainingTime () { return remainingTime; }
+    const int getRemainingTime () { return remainingTimeSec; }
     bool isTimerRunning() const { return timer->isActive(); }
 
     QString timerTypeName() const;
@@ -34,21 +36,25 @@ public:
 
 signals:
     void timerFinished(enum TimerDialog::TimerType type);
+    void timerTick(int remainingTime);
 
 private slots:
-    void updateTimer();
+    void onStartClicked();
+    void onStopClicked();
+    void onResetClicked();
+    void updateTimerCountDown();
 
 private:
-    void setupTimerType();
-    QString getTimerName() const;
-    QString getTimerDescription() const;
-    int getDefaultTime() const;
-    void updateTimeDisplay();
+    void closeEvent(QCloseEvent *event) override;
+    void setupForTimerType(const TimerType &type);
+    void updateDisplay();
+    int getDefaultTimeForTimerType(const TimerType &type) const;
 
     Ui::TimerDialog *ui;
     log4cxx::LoggerPtr logger;
     TimerType currentType;
     QTimer *timer;
-    int remainingTime{};
+    int remainingTimeSec{};
     bool isRunning{};
+    int initialSeconds{};
 };
