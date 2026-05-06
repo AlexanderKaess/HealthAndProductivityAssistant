@@ -128,7 +128,6 @@ void MainWindow::refreshActiveTimers() {
     cleanUpTimers();
 
     ui->activeCountLabel->setText(QString("active timer: %1").arg(activeTimers.size()));
-    ui->completedCountLabel->setText(QString("done: %1").arg(completedCount));
 
     ui->activeTimersTable->setRowCount(activeTimers.size());
     for (int index = 0; index < activeTimers.size(); ++index) {
