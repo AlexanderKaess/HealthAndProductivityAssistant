@@ -5,7 +5,6 @@
 #include <QTime>
 #include <QTimer>
 #include <QString>
-#include <QPointer>
 
 namespace Ui {
 class TimerDialog;
@@ -35,7 +34,7 @@ public:
     QString formattedTime() const;
 
 signals:
-    void timerFinished(enum TimerDialog::TimerType type);
+    void timerFinished(TimerDialog::TimerType type);
     void timerTick(int remainingTime);
 
 private slots:
