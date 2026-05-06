@@ -11,6 +11,9 @@ int main(int argc, char *argv[])
     QFileInfo info(__FILE__);
     QString parentPath = info.path();
     a.setWindowIcon(QIcon(parentPath + "/ui/AppIcon_small.png"));
+    a.setOrganizationName("MyCompany");
+    a.setApplicationName("HealthProductivityApp");
+    a.setQuitOnLastWindowClosed(false);
 
     // load configuration
     QString configPath = QCoreApplication::applicationDirPath() + "/log4cxx.xml";

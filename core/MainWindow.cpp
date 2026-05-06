@@ -5,6 +5,8 @@
 #include "MainWindow.h"
 #include "../ui/ui_MainWindow.h"
 #include "TimerDialog.h"
+#include "Thememanager.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -108,6 +110,10 @@ void MainWindow::onVolumeChanged(int value) {
     ui->volumeValueLabel->setText(QString("%1%").arg(value));
 }
 
+void MainWindow::onThemeChanged(int index) {
+    ThemeManager::instance().applyTheme(static_cast<ThemeManager::Theme>(index));
+}
+
 void MainWindow::closeEvent(QCloseEvent *event) {
     LOG4CXX_INFO(logger, "Close ...");
     cleanUpTimers();
@@ -191,16 +197,16 @@ void MainWindow::openTimerDialog(const TimerDialog::TimerType &timerType) {
 
 void MainWindow::loadSettings() {
     QSettings s("MyCompany", "HealthProductivityApp");
-    ui->soundCheckBox->setChecked(         s.value("sound", true).toBool());
-    ui->popupCheckBox->setChecked(         s.value("popup", true).toBool());
-    ui->systemTrayCheckBox->setChecked(    s.value("systemTray", false).toBool());
-    ui->volumeSlider->setValue(            s.value("volume", 70).toInt());
-    ui->themeComboBox->setCurrentIndex(    s.value("theme", 0).toInt());
-    ui->languageComboBox->setCurrentIndex( s.value("language", 0).toInt());
-    ui->fontSizeSpinBox->setValue(         s.value("fontSize", 10).toInt());
-    ui->autoStartCheckBox->setChecked(     s.value("autoStart", false).toBool());
+    ui->soundCheckBox->setChecked(s.value("sound", true).toBool());
+    ui->popupCheckBox->setChecked(s.value("popup", true).toBool());
+    ui->systemTrayCheckBox->setChecked(s.value("systemTray", false).toBool());
+    ui->volumeSlider->setValue(s.value("volume", 70).toInt());
+    ui->themeComboBox->setCurrentIndex(s.value("theme", 0).toInt());
+    ui->languageComboBox->setCurrentIndex(s.value("language", 0).toInt());
+    ui->fontSizeSpinBox->setValue(s.value("fontSize", 10).toInt());
+    ui->autoStartCheckBox->setChecked(s.value("autoStart", false).toBool());
     ui->minimizeToTrayCheckBox->setChecked(s.value("minimizeToTray", true).toBool());
-    ui->confirmCloseCheckBox->setChecked(  s.value("confirmClose", true).toBool());
+    ui->confirmCloseCheckBox->setChecked(s.value("confirmClose", true).toBool());
 }
 
 void MainWindow::connectSignals() {
@@ -214,9 +220,10 @@ void MainWindow::connectSignals() {
     connect(ui->refreshButton, &QPushButton::clicked, this, &MainWindow::refreshActiveTimers);
     connect(ui->stopAllButton, &QPushButton::clicked, this, &MainWindow::stopAllTimers);
 
-    connect(ui->saveSettingsButton,  &QPushButton::clicked, this, &MainWindow::saveSettings);
+    connect(ui->saveSettingsButton, &QPushButton::clicked, this, &MainWindow::saveSettings);
     connect(ui->resetSettingsButton, &QPushButton::clicked, this, &MainWindow::resetSettings);
-    connect(ui->volumeSlider,        &QSlider::valueChanged, this, &MainWindow::onVolumeChanged);
+    connect(ui->volumeSlider, &QSlider::valueChanged, this, &MainWindow::onVolumeChanged);
+    connect(ui->themeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onThemeChanged);
 }
 
 void MainWindow::cleanUpTimers() {

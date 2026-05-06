@@ -40,6 +40,7 @@ private slots:
     void saveSettings();
     void resetSettings();
     void onVolumeChanged(int value);
+    void onThemeChanged(int index);
 
 private:
     void closeEvent(QCloseEvent *event) override;
