@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QPointer>
 #include <QList>
+#include <QMessageBox>
 
 #include "TimerDialog.h"
 
@@ -13,17 +14,16 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
-// class TimerDialog;
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
+    //1. QTab
     void onPomodoroTimerClicked();
     void onStayHydratedClicked();
     void onFreshAirTimerClicked();
@@ -31,10 +31,18 @@ private slots:
     void onBreakTimerClicked();
     void onMovementTimerClicked();
 
-    void onTimerFinished(TimerDialog::TimerType type);
+    //2. QTab
     void refreshActiveTimers();
+    void stopAllTimers();
+    void onTimerFinished(TimerDialog::TimerType type);
+
+    //3.QTab
+    void saveSettings();
+    void resetSettings();
+    void onVolumeChanged(int value);
 
 private:
+    void closeEvent(QCloseEvent *event) override;
     void openTimerDialog(const TimerDialog::TimerType &timerType);
     void cleanUpTimers();
 

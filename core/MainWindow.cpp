@@ -1,4 +1,5 @@
 #include <QPointer>
+#include <QCloseEvent>
 
 #include "MainWindow.h"
 #include "../ui/ui_MainWindow.h"
@@ -65,6 +66,29 @@ void MainWindow::onTimerFinished(TimerDialog::TimerType type){
     refreshActiveTimers();
 }
 
+void MainWindow::saveSettings() {}
+
+void MainWindow::resetSettings() {}
+
+void MainWindow::onVolumeChanged(int value) {
+    ui->volumeValueLabel->setText(QString("%1%").arg(value));
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    LOG4CXX_INFO(logger, "Close ...");
+    cleanUpTimers();
+
+    if (!activeTimers.isEmpty() && ui->confirmCloseCheckBox->isChecked()) {
+        auto reply = QMessageBox::question(this, "Timer activ",
+                                           QString("%1 timer still running. Are you want to top them?").arg(activeTimers.size()));
+        if (reply != QMessageBox::Yes) {
+            event->ignore();
+            return;
+        }
+    }
+    event->accept();
+}
+
 void MainWindow::refreshActiveTimers() {
     LOG4CXX_INFO(logger, "Refresh active timer ...");
     cleanUpTimers();
@@ -89,6 +113,29 @@ void MainWindow::refreshActiveTimers() {
             connect(stopBtn, &QPushButton::clicked, timerDialog, &QDialog::close);
             ui->activeTimersTable->setCellWidget(index, 3, stopBtn);
         }
+    }
+}
+
+void MainWindow::stopAllTimers() {
+    LOG4CXX_INFO(logger, "Stop all time");
+    cleanUpTimers();
+
+    if (activeTimers.isEmpty()) {
+        QMessageBox::information(this, "Info", "No active timers");
+        return;
+    }
+
+    auto reply = QMessageBox::question(this, "Stop all timers",
+                                       QString("Do you wanna stop all %1 timer?").arg(activeTimers.size()));
+
+    if (reply == QMessageBox::Yes) {
+        const auto timers = activeTimers;
+        for (const auto &timer : timers) {
+            if (timer) {
+                timer->close();
+            }
+        }
+        ui->statusbar->showMessage("All timers have stopped", 3000);
     }
 }
 

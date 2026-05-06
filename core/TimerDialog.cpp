@@ -1,5 +1,6 @@
 #include <QMessageBox>
 #include <QCloseEvent>
+
 #include "TimerDialog.h"
 #include "../ui/ui_TimerDialog.h"
 
@@ -119,6 +120,7 @@ void TimerDialog::updateTimerCountDown() {
 }
 
 void TimerDialog::closeEvent(QCloseEvent *event) {
+    LOG4CXX_INFO(logger, "Close ...");
     if (timer->isActive()) {
         auto reply = QMessageBox::question(this, "Timer is running",
                                            "The timer is still running. Do you want to close it??",
