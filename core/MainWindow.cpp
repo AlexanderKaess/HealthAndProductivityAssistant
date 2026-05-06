@@ -1,5 +1,6 @@
 #include <QPointer>
 #include <QCloseEvent>
+#include <QSettings>
 
 #include "MainWindow.h"
 #include "../ui/ui_MainWindow.h"
@@ -9,18 +10,19 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , logger(log4cxx::Logger::getLogger("HealthLogger.MainWindow"))
+    , refreshTimer(new QTimer(this))
 {
     ui->setupUi(this);
     setWindowTitle("HealthAndProductivityAssistant");
     LOG4CXX_INFO(logger, "Mainwindow started ...");
 
-    // Connect buttons to slots
-    connect(ui->pomodoroPushButton,&QPushButton::clicked,this,&MainWindow::onPomodoroTimerClicked);
-    connect(ui->stayHydratedPushButton,&QPushButton::clicked,this,&MainWindow::onStayHydratedClicked);
-    connect(ui->freshAirPushButton,&QPushButton::clicked,this,&MainWindow::onFreshAirTimerClicked);
-    connect(ui->workingHoursPushButton,&QPushButton::clicked,this,&MainWindow::onWorkingHourTimerClicked);
-    connect(ui->breakPushButton, &QPushButton::clicked, this, &MainWindow::onBreakTimerClicked);
-    connect(ui->movementPushButton,&QPushButton::clicked,this,&MainWindow::onMovementTimerClicked);
+    connectSignals();
+    loadSettings();
+
+    refreshTimer->setInterval(1000);
+    connect(refreshTimer, &QTimer::timeout, this, &MainWindow::refreshActiveTimers);
+    refreshTimer->start();
+    refreshActiveTimers();
 
     statusBar()->showMessage("ready ...", 3000);
 }
@@ -66,9 +68,41 @@ void MainWindow::onTimerFinished(TimerDialog::TimerType type){
     refreshActiveTimers();
 }
 
-void MainWindow::saveSettings() {}
+void MainWindow::saveSettings() {
+    QSettings s("MyCompany", "HealthProductivityApp");
+    s.setValue("sound",          ui->soundCheckBox->isChecked());
+    s.setValue("popup",          ui->popupCheckBox->isChecked());
+    s.setValue("systemTray",     ui->systemTrayCheckBox->isChecked());
+    s.setValue("volume",         ui->volumeSlider->value());
+    s.setValue("theme",          ui->themeComboBox->currentIndex());
+    s.setValue("language",       ui->languageComboBox->currentIndex());
+    s.setValue("fontSize",       ui->fontSizeSpinBox->value());
+    s.setValue("autoStart",      ui->autoStartCheckBox->isChecked());
+    s.setValue("minimizeToTray", ui->minimizeToTrayCheckBox->isChecked());
+    s.setValue("confirmClose",   ui->confirmCloseCheckBox->isChecked());
 
-void MainWindow::resetSettings() {}
+    QMessageBox::information(this, "Settings", "Settings safed!");
+    ui->statusbar->showMessage("Settings safed", 3000);
+}
+
+void MainWindow::resetSettings() {
+    auto reply = QMessageBox::question(this, "Reset", "Reset all settings?");
+    if (reply != QMessageBox::Yes) {
+        return;
+    }
+
+    ui->soundCheckBox->setChecked(true);
+    ui->popupCheckBox->setChecked(true);
+    ui->systemTrayCheckBox->setChecked(false);
+    ui->volumeSlider->setValue(70);
+    ui->themeComboBox->setCurrentIndex(0);
+    ui->languageComboBox->setCurrentIndex(0);
+    ui->fontSizeSpinBox->setValue(10);
+    ui->autoStartCheckBox->setChecked(false);
+    ui->minimizeToTrayCheckBox->setChecked(true);
+    ui->confirmCloseCheckBox->setChecked(true);
+    ui->statusbar->showMessage("Settings reset", 3000);
+}
 
 void MainWindow::onVolumeChanged(int value) {
     ui->volumeValueLabel->setText(QString("%1%").arg(value));
@@ -154,6 +188,36 @@ void MainWindow::openTimerDialog(const TimerDialog::TimerType &timerType) {
     dialog->show();
     refreshActiveTimers();
     ui->statusbar->showMessage(dialog->timerTypeName() + " started ...", 3000);
+}
+
+void MainWindow::loadSettings() {
+    QSettings s("MyCompany", "HealthProductivityApp");
+    ui->soundCheckBox->setChecked(         s.value("sound", true).toBool());
+    ui->popupCheckBox->setChecked(         s.value("popup", true).toBool());
+    ui->systemTrayCheckBox->setChecked(    s.value("systemTray", false).toBool());
+    ui->volumeSlider->setValue(            s.value("volume", 70).toInt());
+    ui->themeComboBox->setCurrentIndex(    s.value("theme", 0).toInt());
+    ui->languageComboBox->setCurrentIndex( s.value("language", 0).toInt());
+    ui->fontSizeSpinBox->setValue(         s.value("fontSize", 10).toInt());
+    ui->autoStartCheckBox->setChecked(     s.value("autoStart", false).toBool());
+    ui->minimizeToTrayCheckBox->setChecked(s.value("minimizeToTray", true).toBool());
+    ui->confirmCloseCheckBox->setChecked(  s.value("confirmClose", true).toBool());
+}
+
+void MainWindow::connectSignals() {
+    connect(ui->pomodoroPushButton,&QPushButton::clicked,this,&MainWindow::onPomodoroTimerClicked);
+    connect(ui->stayHydratedPushButton,&QPushButton::clicked,this,&MainWindow::onStayHydratedClicked);
+    connect(ui->freshAirPushButton,&QPushButton::clicked,this,&MainWindow::onFreshAirTimerClicked);
+    connect(ui->workingHoursPushButton,&QPushButton::clicked,this,&MainWindow::onWorkingHourTimerClicked);
+    connect(ui->breakPushButton, &QPushButton::clicked, this, &MainWindow::onBreakTimerClicked);
+    connect(ui->movementPushButton,&QPushButton::clicked,this,&MainWindow::onMovementTimerClicked);
+
+    connect(ui->refreshButton, &QPushButton::clicked, this, &MainWindow::refreshActiveTimers);
+    connect(ui->stopAllButton, &QPushButton::clicked, this, &MainWindow::stopAllTimers);
+
+    connect(ui->saveSettingsButton,  &QPushButton::clicked, this, &MainWindow::saveSettings);
+    connect(ui->resetSettingsButton, &QPushButton::clicked, this, &MainWindow::resetSettings);
+    connect(ui->volumeSlider,        &QSlider::valueChanged, this, &MainWindow::onVolumeChanged);
 }
 
 void MainWindow::cleanUpTimers() {

@@ -44,11 +44,14 @@ private slots:
 private:
     void closeEvent(QCloseEvent *event) override;
     void openTimerDialog(const TimerDialog::TimerType &timerType);
+    void loadSettings();
+    void connectSignals();
     void cleanUpTimers();
 
     Ui::MainWindow *ui;
     log4cxx::LoggerPtr logger;
     QList<QPointer<TimerDialog>> activeTimers;
+    QTimer *refreshTimer;
     int completedCount = 0;
 
 
