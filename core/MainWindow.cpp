@@ -78,7 +78,6 @@ void MainWindow::saveSettings() {
     s.setValue("volume",         ui->volumeSlider->value());
     s.setValue("theme",          ui->themeComboBox->currentIndex());
     s.setValue("language",       ui->languageComboBox->currentIndex());
-    s.setValue("fontSize",       ui->fontSizeSpinBox->value());
     s.setValue("autoStart",      ui->autoStartCheckBox->isChecked());
     s.setValue("minimizeToTray", ui->minimizeToTrayCheckBox->isChecked());
     s.setValue("confirmClose",   ui->confirmCloseCheckBox->isChecked());
@@ -99,7 +98,6 @@ void MainWindow::resetSettings() {
     ui->volumeSlider->setValue(70);
     ui->themeComboBox->setCurrentIndex(0);
     ui->languageComboBox->setCurrentIndex(0);
-    ui->fontSizeSpinBox->setValue(10);
     ui->autoStartCheckBox->setChecked(false);
     ui->minimizeToTrayCheckBox->setChecked(true);
     ui->confirmCloseCheckBox->setChecked(true);
@@ -203,7 +201,6 @@ void MainWindow::loadSettings() {
     ui->volumeSlider->setValue(s.value("volume", 70).toInt());
     ui->themeComboBox->setCurrentIndex(s.value("theme", 0).toInt());
     ui->languageComboBox->setCurrentIndex(s.value("language", 0).toInt());
-    ui->fontSizeSpinBox->setValue(s.value("fontSize", 10).toInt());
     ui->autoStartCheckBox->setChecked(s.value("autoStart", false).toBool());
     ui->minimizeToTrayCheckBox->setChecked(s.value("minimizeToTray", true).toBool());
     ui->confirmCloseCheckBox->setChecked(s.value("confirmClose", true).toBool());

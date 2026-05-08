@@ -34,7 +34,7 @@
        <string notr="true">QTabBar::tab { padding: 10px 20px; width: 200; height: 35; font-size: 11pt; } QTabBar::tab:selected { background: #3498db; color: white; font-weight: bold; }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tabTimerSelection">
        <attribute name="title">
@@ -351,11 +351,6 @@
                <string>dark</string>
               </property>
              </item>
-             <item>
-              <property name="text">
-               <string>system</string>
-              </property>
-             </item>
             </widget>
            </item>
            <item row="1" column="0">
@@ -382,29 +377,6 @@
                <string>french</string>
               </property>
              </item>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="fontSizeLabel">
-             <property name="text">
-              <string>font size:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QSpinBox" name="fontSizeSpinBox">
-             <property name="suffix">
-              <string> pt</string>
-             </property>
-             <property name="minimum">
-              <number>8</number>
-             </property>
-             <property name="maximum">
-              <number>24</number>
-             </property>
-             <property name="value">
-              <number>10</number>
-             </property>
             </widget>
            </item>
           </layout>

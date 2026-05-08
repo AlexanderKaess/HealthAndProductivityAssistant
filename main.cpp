@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QDir>
 #include "MainWindow.h"
+#include "ThemeManager.h"
 #include <log4cxx/xml/domconfigurator.h>
 
 int main(int argc, char *argv[])
@@ -14,6 +15,9 @@ int main(int argc, char *argv[])
     a.setOrganizationName("MyCompany");
     a.setApplicationName("HealthProductivityApp");
     a.setQuitOnLastWindowClosed(false);
+
+    ThemeManager::instance().applyTheme(ThemeManager::Theme::DARK);
+
 
     // load configuration
     QString configPath = QCoreApplication::applicationDirPath() + "/log4cxx.xml";

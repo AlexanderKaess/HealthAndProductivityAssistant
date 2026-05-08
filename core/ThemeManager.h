@@ -8,9 +8,10 @@ class ThemeManager : public QObject
     Q_OBJECT
 public:
     enum Theme {
-        Light,
-        Dark,
-        System};
+        LIGHT,
+        DARK,
+        SYSTEM
+    };
     Q_ENUM(Theme)
 
     static ThemeManager& instance();
@@ -22,7 +23,8 @@ signals:
 
 private:
     explicit ThemeManager(QObject *parent = nullptr);
+    Theme resolveTheme(Theme theme) const;
     QString lightStyleSheet() const;
     QString darkStyleSheet() const;
-    Theme currentTheme = Light;
+    Theme currentTheme = SYSTEM;
 };
