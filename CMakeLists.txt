@@ -16,6 +16,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(log4cxx REQUIRED)
+find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
 
 add_subdirectory(appController/)
 add_subdirectory(core/)
@@ -25,8 +26,11 @@ add_subdirectory(unitTests/)
 qt_add_executable(HealthAndProductivityAssistant
     MANUAL_FINALIZATION
     main.cpp
+    resources/resources.qrc
 
 )
+
+qt_add_translations(HealthAndProductivityAssistant TS_FILES resources/HealthAndProductivityAssistant_en_GB.ts)
 
 target_link_libraries(HealthAndProductivityAssistant PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets

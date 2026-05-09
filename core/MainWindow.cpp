@@ -173,6 +173,7 @@ void MainWindow::stopAllTimers() {
 }
 
 void MainWindow::openTimerDialog(const TimerDialog::TimerType &timerType) {
+    LOG4CXX_INFO(logger, "Open timer dialog");
     QPointer<TimerDialog> dialog = new TimerDialog(timerType, this);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     activeTimers.append(dialog);
