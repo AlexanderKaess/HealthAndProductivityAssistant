@@ -203,6 +203,7 @@ void MainWindow::loadSettings() {
 }
 
 void MainWindow::connectSignals() {
+    LOG4CXX_INFO(logger, "Connect signals and slots");
     connect(ui->pomodoroPushButton,&QPushButton::clicked,this,&MainWindow::onPomodoroTimerClicked);
     connect(ui->stayHydratedPushButton,&QPushButton::clicked,this,&MainWindow::onStayHydratedClicked);
     connect(ui->freshAirPushButton,&QPushButton::clicked,this,&MainWindow::onFreshAirTimerClicked);
@@ -222,7 +223,7 @@ void MainWindow::connectSignals() {
 }
 
 void MainWindow::cleanUpTimers() {
-    // remove all destroyed TimerDialogs
+    LOG4CXX_INFO(logger, "Remove all destroyed timers from active timers Qlist");
     activeTimers.erase(
         std::remove_if(activeTimers.begin(), activeTimers.end(),
                        [](const QPointer<TimerDialog> &p){ return p.isNull();}),
