@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
     a.setWindowIcon(QIcon(parentPath + "/ui/AppIcon_small.png"));
     a.setOrganizationName("MyCompany");
     a.setApplicationName("HealthProductivityApp");
-    a.setQuitOnLastWindowClosed(false);
 
+    // set dark theme as default
     ThemeManager::instance().applyTheme(ThemeManager::Theme::DARK);
 
 

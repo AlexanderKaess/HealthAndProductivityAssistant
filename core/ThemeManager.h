@@ -1,5 +1,6 @@
 #pragma once
 
+#include <log4cxx/logger.h>
 #include <QObject>
 #include <QString>
 
@@ -26,5 +27,7 @@ private:
     Theme resolveTheme(Theme theme) const;
     QString lightStyleSheet() const;
     QString darkStyleSheet() const;
+
+    log4cxx::LoggerPtr logger;
     Theme currentTheme = SYSTEM;
 };
