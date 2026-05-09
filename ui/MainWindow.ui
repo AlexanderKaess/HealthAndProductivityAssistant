@@ -44,7 +44,7 @@
         <item>
          <widget class="QLabel" name="subtitleLabel">
           <property name="styleSheet">
-           <string>font-size: 11pt; font-style: italic; color: #7f8c8d; padding: 5px;</string>
+           <string notr="true">font-size: 12pt; font-weight: bold; color: #2c3e50; padding: 8px;</string>
           </property>
           <property name="text">
            <string>select a timer</string>
