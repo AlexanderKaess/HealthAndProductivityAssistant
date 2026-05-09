@@ -6,6 +6,7 @@
 #include "../ui/ui_MainWindow.h"
 #include "TimerDialog.h"
 #include "ThemeManager.h"
+#include "SoundManager.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -66,6 +67,7 @@ void MainWindow::onMovementTimerClicked() {
 
 void MainWindow::onTimerFinished(TimerDialog::TimerType type){
     completedCount++;
+    SoundManager::instance().playNotification();
     refreshActiveTimers();
 }
 
@@ -73,12 +75,9 @@ void MainWindow::saveSettings() {
     QSettings s("MyCompany", "HealthProductivityApp");
     s.setValue("sound",          ui->soundCheckBox->isChecked());
     s.setValue("popup",          ui->popupCheckBox->isChecked());
-    s.setValue("systemTray",     ui->systemTrayCheckBox->isChecked());
     s.setValue("volume",         ui->volumeSlider->value());
     s.setValue("theme",          ui->themeComboBox->currentIndex());
     s.setValue("language",       ui->languageComboBox->currentIndex());
-    s.setValue("autoStart",      ui->autoStartCheckBox->isChecked());
-    s.setValue("minimizeToTray", ui->minimizeToTrayCheckBox->isChecked());
     s.setValue("confirmClose",   ui->confirmCloseCheckBox->isChecked());
 
     QMessageBox::information(this, "Settings", "Settings safed!");
@@ -93,18 +92,16 @@ void MainWindow::resetSettings() {
 
     ui->soundCheckBox->setChecked(true);
     ui->popupCheckBox->setChecked(true);
-    ui->systemTrayCheckBox->setChecked(false);
-    ui->volumeSlider->setValue(70);
+    ui->volumeSlider->setValue(75);
     ui->themeComboBox->setCurrentIndex(0);
     ui->languageComboBox->setCurrentIndex(0);
-    ui->autoStartCheckBox->setChecked(false);
-    ui->minimizeToTrayCheckBox->setChecked(true);
     ui->confirmCloseCheckBox->setChecked(true);
     ui->statusbar->showMessage("Settings reset", 3000);
 }
 
 void MainWindow::onVolumeChanged(int value) {
     ui->volumeValueLabel->setText(QString("%1%").arg(value));
+    SoundManager::instance().setVolume(value);
 }
 
 void MainWindow::onThemeChanged(int index) {
@@ -196,13 +193,13 @@ void MainWindow::loadSettings() {
     QSettings s("MyCompany", "HealthProductivityApp");
     ui->soundCheckBox->setChecked(s.value("sound", true).toBool());
     ui->popupCheckBox->setChecked(s.value("popup", true).toBool());
-    ui->systemTrayCheckBox->setChecked(s.value("systemTray", false).toBool());
-    ui->volumeSlider->setValue(s.value("volume", 70).toInt());
+    ui->volumeSlider->setValue(s.value("volume", 75).toInt());
     ui->themeComboBox->setCurrentIndex(s.value("theme", 0).toInt());
     ui->languageComboBox->setCurrentIndex(s.value("language", 0).toInt());
-    ui->autoStartCheckBox->setChecked(s.value("autoStart", false).toBool());
-    ui->minimizeToTrayCheckBox->setChecked(s.value("minimizeToTray", true).toBool());
     ui->confirmCloseCheckBox->setChecked(s.value("confirmClose", true).toBool());
+
+    SoundManager::instance().setVolume(ui->volumeSlider->value());
+    SoundManager::instance().setEnabled(ui->themeComboBox->currentIndex());
 }
 
 void MainWindow::connectSignals() {
@@ -219,7 +216,9 @@ void MainWindow::connectSignals() {
     connect(ui->saveSettingsButton, &QPushButton::clicked, this, &MainWindow::saveSettings);
     connect(ui->resetSettingsButton, &QPushButton::clicked, this, &MainWindow::resetSettings);
     connect(ui->volumeSlider, &QSlider::valueChanged, this, &MainWindow::onVolumeChanged);
+
     connect(ui->themeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onThemeChanged);
+    connect(ui->soundCheckBox, &QCheckBox::toggled, &SoundManager::instance(), &SoundManager::setEnabled);
 }
 
 void MainWindow::cleanUpTimers() {

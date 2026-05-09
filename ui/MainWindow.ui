@@ -280,16 +280,6 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="systemTrayCheckBox">
-             <property name="text">
-              <string>systemtray notifications</string>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
             <layout class="QHBoxLayout" name="volumeLayout">
              <item>
               <widget class="QLabel" name="volumeLabel">
@@ -332,14 +322,21 @@
            <string>🎨 appearance</string>
           </property>
           <layout class="QFormLayout" name="appearanceLayout">
-           <item row="0" column="0">
+           <item row="2" column="0">
+            <widget class="QLabel" name="languageLabel">
+             <property name="text">
+              <string>language:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
             <widget class="QLabel" name="themeLabel">
              <property name="text">
               <string>theme:</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
+           <item row="3" column="1">
             <widget class="QComboBox" name="themeComboBox">
              <item>
               <property name="text">
@@ -353,14 +350,7 @@
              </item>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="languageLabel">
-             <property name="text">
-              <string>language:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
+           <item row="2" column="1">
             <widget class="QComboBox" name="languageComboBox">
              <item>
               <property name="text">
@@ -391,23 +381,6 @@
            <string>⚡ behavior</string>
           </property>
           <layout class="QVBoxLayout" name="behaviorLayout">
-           <item>
-            <widget class="QCheckBox" name="autoStartCheckBox">
-             <property name="text">
-              <string>start automatically at system startup</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="minimizeToTrayCheckBox">
-             <property name="text">
-              <string>minimize to the system tray when closing</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
            <item>
             <widget class="QCheckBox" name="confirmCloseCheckBox">
              <property name="text">

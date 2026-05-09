@@ -7,10 +7,11 @@ set(CORE_SOURCES
 	TimerDialog.cpp
 	ThemeManager.h
 	ThemeManager.cpp
+	SoundManager.h
+	SoundManager.cpp
 )
 
-add_library(corelib ${CORE_SOURCES}
-	ThemeManager.h ThemeManager.cpp)
+add_library(corelib ${CORE_SOURCES})
 target_include_directories(corelib PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_SOURCE_DIR}
