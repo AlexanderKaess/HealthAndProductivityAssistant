@@ -44,7 +44,7 @@
       <string>Timer Name</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
@@ -60,10 +60,10 @@
       <string notr="true">color: #7f8c8d;</string>
      </property>
      <property name="text">
-      <string>Timer-Beschreibung</string>
+      <string>timer description</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -85,14 +85,14 @@
       <string>00:00:00</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="timeGroupBox">
      <property name="title">
-      <string>Zeit einstellen</string>
+      <string>adjust time</string>
      </property>
      <layout class="QHBoxLayout" name="timeLayout">
       <item>
@@ -100,17 +100,17 @@
         <item>
          <widget class="QLabel" name="hoursLabel">
           <property name="text">
-           <string>Stunden</string>
+           <string>hours</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QSpinBox" name="hoursSpinBox">
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
           <property name="maximum">
            <number>23</number>
@@ -124,17 +124,17 @@
         <item>
          <widget class="QLabel" name="minutesLabel">
           <property name="text">
-           <string>Minuten</string>
+           <string>minutes</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QSpinBox" name="minutesSpinBox">
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
           <property name="maximum">
            <number>59</number>
@@ -148,17 +148,17 @@
         <item>
          <widget class="QLabel" name="secondsLabel">
           <property name="text">
-           <string>Sekunden</string>
+           <string>seconds</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QSpinBox" name="secondsSpinBox">
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
           <property name="maximum">
            <number>59</number>
@@ -201,7 +201,7 @@ QPushButton:disabled {
 }</string>
        </property>
        <property name="text">
-        <string>▶ Start</string>
+        <string>▶ start</string>
        </property>
       </widget>
      </item>
@@ -237,7 +237,7 @@ QPushButton:disabled {
 }</string>
        </property>
        <property name="text">
-        <string>⏹ Stop</string>
+        <string>⏹ stop</string>
        </property>
       </widget>
      </item>
@@ -267,7 +267,7 @@ QPushButton:hover {
 }</string>
        </property>
        <property name="text">
-        <string>🔄 Reset</string>
+        <string>🔄 reset</string>
        </property>
       </widget>
      </item>
@@ -297,7 +297,7 @@ QPushButton:hover {
 }</string>
        </property>
        <property name="text">
-        <string>✖ Schließen</string>
+        <string>✖ close</string>
        </property>
       </widget>
      </item>
@@ -308,4 +308,3 @@ QPushButton:hover {
  <resources/>
  <connections/>
 </ui>
-
