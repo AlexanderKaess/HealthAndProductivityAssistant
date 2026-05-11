@@ -27,10 +27,13 @@ qt_add_executable(HealthAndProductivityAssistant
     MANUAL_FINALIZATION
     main.cpp
     resources/resources.qrc
-
 )
 
-qt_add_translations(HealthAndProductivityAssistant TS_FILES resources/HealthAndProductivityAssistant_en_GB.ts)
+qt_add_translations(HealthAndProductivityAssistant
+    TS_FILES
+        resources/translations/HealthAndProductivityAssistant_de_DE.ts
+        resources/translations/HealthAndProductivityAssistant_en_GB.ts
+)
 
 target_link_libraries(HealthAndProductivityAssistant PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets

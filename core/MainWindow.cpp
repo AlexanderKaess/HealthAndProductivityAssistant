@@ -26,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent)
     refreshTimer->start();
     refreshActiveTimers();
 
+    // set the current index to 1 = dark
+    ui->themeComboBox->setCurrentIndex(1);
+
     statusBar()->showMessage("ready ...", 3000);
 }
 

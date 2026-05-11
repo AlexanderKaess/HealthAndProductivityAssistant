@@ -17,7 +17,7 @@ ThemeManager::ThemeManager(QObject *parent)
     connect(QApplication::styleHints(), &QStyleHints::colorSchemeChanged, this,
         [this](Qt::ColorScheme) {
             if (currentTheme == SYSTEM) {
-                applyTheme(SYSTEM);
+                applyTheme(DARK);
             }});
 }
 
