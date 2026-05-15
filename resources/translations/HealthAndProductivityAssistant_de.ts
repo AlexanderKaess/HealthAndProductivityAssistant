@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de_DE">
+<TS version="2.1" language="de">
 <context>
 	<name>MainWindow</name>
 	<message><source>Ready</source><translation>Bereit</translation></message>
-	<message><source>Timer beendet</source><translation>Timer beendet</translation></message>
-	<message><source>Timer activ</source><translation>Timer aktiv</translation></message>
+	<message><source>Timer stopped</source><translation>Timer beendet</translation></message>
+	<message><source>Timer active</source><translation>Timer aktiv</translation></message>
 	<message><source>%1 timers still running. Really quit?</source>
 			 <translation>%1 Timer laufen noch. Wirklich beenden?</translation></message>
 	<message><source>pomodoro timer</source><translation>Pomodoro Timer</translation></message>
