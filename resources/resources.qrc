@@ -1,3 +1,7 @@
 <RCC>
-    <qresource prefix="/new/prefix1"/>
+    <qresource prefix="/">
+        <file>translations/HealthAndProductivityAssistant_de.ts</file>
+        <file>translations/HealthAndProductivityAssistant_en_GB.ts</file>
+        <file>sounds/message-notification-4.wav</file>
+    </qresource>
 </RCC>

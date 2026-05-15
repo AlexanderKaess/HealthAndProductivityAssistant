@@ -112,7 +112,7 @@ void MainWindow::onThemeChanged(int index) {
 }
 
 void MainWindow::onLanguageChanged(int index) {
-    const QString localLanguage = (index == 0) ? "de" : "en";
+    const QString localLanguage = (index == 0) ? "de" : "en_GB";
     applyLanguage(localLanguage);
 }
 
