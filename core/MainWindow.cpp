@@ -111,6 +111,11 @@ void MainWindow::onThemeChanged(int index) {
     ThemeManager::instance().applyTheme(static_cast<ThemeManager::Theme>(index));
 }
 
+void MainWindow::onLanguageChanged(int index) {
+    const QString localLanguage = (index == 0) ? "de_DE" : "en_GB";
+    applyLanguage(localLanguage);
+}
+
 void MainWindow::closeEvent(QCloseEvent *event) {
     LOG4CXX_INFO(logger, "Close ...");
     cleanUpTimers();
@@ -224,6 +229,7 @@ void MainWindow::connectSignals() {
 
     connect(ui->themeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onThemeChanged);
     connect(ui->soundCheckBox, &QCheckBox::toggled, &SoundManager::instance(), &SoundManager::setEnabled);
+    connect(ui->languageComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onLanguageChanged);
 }
 
 void MainWindow::cleanUpTimers() {
@@ -232,4 +238,11 @@ void MainWindow::cleanUpTimers() {
         std::remove_if(activeTimers.begin(), activeTimers.end(),
                        [](const QPointer<TimerDialog> &p){ return p.isNull();}),
         activeTimers.end());
+}
+
+void MainWindow::applyLanguage(const QString &localLanguage) {
+    qApp->removeTranslator(translator);
+    if(translator->load(QString(":/translations/HealthAndProductivityAssistant_%1.ts").arg(localLanguage))){
+        qApp->installTranslator(translator);
+    }
 }

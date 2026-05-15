@@ -5,6 +5,7 @@
 #include <QPointer>
 #include <QList>
 #include <QMessageBox>
+#include <QTranslator>
 
 #include "TimerDialog.h"
 
@@ -41,6 +42,7 @@ private slots:
     void resetSettings();
     void onVolumeChanged(int value);
     void onThemeChanged(int index);
+    void onLanguageChanged(int index);
 
 private:
     void closeEvent(QCloseEvent *event) override;
@@ -48,12 +50,13 @@ private:
     void loadSettings();
     void connectSignals();
     void cleanUpTimers();
+    void applyLanguage(const QString &localLanguage);
 
     Ui::MainWindow *ui;
     log4cxx::LoggerPtr logger;
     QList<QPointer<TimerDialog>> activeTimers;
     QTimer *refreshTimer;
     int completedCount = 0;
-
+    QTranslator *translator = nullptr;
 
 };
