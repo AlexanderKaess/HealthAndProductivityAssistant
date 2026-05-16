@@ -112,7 +112,7 @@ void MainWindow::onThemeChanged(int index) {
 }
 
 void MainWindow::onLanguageChanged(int index) {
-    const QString localLanguage = (index == 0) ? "de" : "en_GB";
+    const QString localLanguage = (index == 0) ? "de" : "en";
     applyLanguage(localLanguage);
 }
 
@@ -244,5 +244,7 @@ void MainWindow::applyLanguage(const QString &localLanguage) {
     qApp->removeTranslator(translator);
     if(translator->load(QString(":/translations/HealthAndProductivityAssistant_%1.ts").arg(localLanguage))){
         qApp->installTranslator(translator);
+    }else {
+        LOG4CXX_WARN(logger, "Could not load translation file");
     }
 }

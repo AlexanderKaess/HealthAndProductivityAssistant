@@ -6,6 +6,7 @@
 #include <QList>
 #include <QMessageBox>
 #include <QTranslator>
+#include <QLocale>
 
 #include "TimerDialog.h"
 
