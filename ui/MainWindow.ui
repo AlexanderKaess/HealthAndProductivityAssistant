@@ -365,11 +365,6 @@
                <string>english</string>
               </property>
              </item>
-             <item>
-              <property name="text">
-               <string>french</string>
-              </property>
-             </item>
             </widget>
            </item>
           </layout>
