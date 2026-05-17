@@ -70,10 +70,12 @@ void TimerDialog::onStartClicked() {
     LOG4CXX_INFO(logger, "Start timer clicked ...");
     if (!timer->isActive()) {
         LOG4CXX_INFO(logger, "Timer is not activ, start timer now");
-        if (ui->minutesSpinBox) {
+        if (ui->hoursSpinBox or ui->minutesSpinBox or ui->secondsSpinBox) {
+            int hours = ui->hoursSpinBox->value();
             int minutes = ui->minutesSpinBox->value();
-            if ( remainingTimeSec == initialSeconds) {
-                initialSeconds = minutes * 60;
+            int seconds = ui->secondsSpinBox->value();
+            if (remainingTimeSec == initialSeconds) {
+                initialSeconds = (hours * 60 * 60) + (minutes * 60) + seconds;
                 remainingTimeSec = initialSeconds;
             }
         }

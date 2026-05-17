@@ -20,8 +20,8 @@ message("CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
 message("Qt6_DIR: ${Qt6_DIR}")
 
 if(NOT Qt6_DIR AND NOT Qt5_DIR)
-    message(FATAL_ERROR "
-        Qt installation not found. Install Qt or set environment variable:
+    message(FATAL_ERROR
+        "Qt installation not found. Install Qt or set environment variable:
         -DCMAKE_PREFIX_PATH=/Users/alexanderkaess/Qt/6.10.1/macos")
 endif()
 
