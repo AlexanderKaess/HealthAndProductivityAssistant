@@ -34,7 +34,7 @@
        <string notr="true">QTabBar::tab { padding: 10px 20px; width: 200; height: 35; font-size: 11pt; } QTabBar::tab:selected { background: #3498db; color: white; font-weight: bold; }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tabTimerSelection">
        <attribute name="title">
@@ -261,6 +261,9 @@
           <layout class="QVBoxLayout" name="notificationLayout">
            <item>
             <widget class="QCheckBox" name="soundCheckBox">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
              <property name="text">
               <string>play sound when timer ends</string>
              </property>

@@ -26,8 +26,10 @@ MainWindow::MainWindow(QWidget *parent)
     refreshTimer->start();
     refreshActiveTimers();
 
-    // set the current index to 1 = dark
+    // set the current theme index to 1 = dark
     ui->themeComboBox->setCurrentIndex(1);
+    // set the current sound check box to unchecked
+    ui->soundCheckBox->setCheckState(Qt::Unchecked);
 
     statusBar()->showMessage("ready ...", 3000);
 }
@@ -88,6 +90,7 @@ void MainWindow::saveSettings() {
 }
 
 void MainWindow::resetSettings() {
+    LOG4CXX_INFO(logger, "Reset application settings");
     auto reply = QMessageBox::question(this, "Reset", "Reset all settings?");
     if (reply != QMessageBox::Yes) {
         return;
@@ -146,7 +149,7 @@ void MainWindow::refreshActiveTimers() {
 
         ui->activeTimersTable->setItem(index, 0, new QTableWidgetItem(timerDialog->timerTypeName()));
         ui->activeTimersTable->setItem(index, 1, new QTableWidgetItem(timerDialog->formattedTime()));
-        ui->activeTimersTable->setItem(index, 2, new QTableWidgetItem(timerDialog->isTimerRunning() ? "running" : "break"));
+        ui->activeTimersTable->setItem(index, 2, new QTableWidgetItem(timerDialog->isTimerRunning() ? "running" : "stopped"));
 
         if (!ui->activeTimersTable->cellWidget(index, 3)) {
             QPushButton *stopBtn = new QPushButton("stop");

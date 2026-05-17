@@ -25,9 +25,9 @@ if(NOT Qt6_DIR AND NOT Qt5_DIR)
         -DCMAKE_PREFIX_PATH=/Users/alexanderkaess/Qt/6.10.1/macos")
 endif()
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Core LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Core LinguistTools Multimedia)
 message("QT_VERSION_MAJOR: ${QT_VERSION_MAJOR}")
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Core LinguistTools)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Core LinguistTools Multimedia)
 find_package(log4cxx REQUIRED)
 
 add_subdirectory(appController/)
@@ -75,9 +75,10 @@ qt_add_resources(HealthAndProductivityAssistant "translations"
     FILES   ${QM_FILES}
 )
 
-
 target_link_libraries(HealthAndProductivityAssistant PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Multimedia
     corelib
     uilib
     log4cxx

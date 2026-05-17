@@ -62,7 +62,7 @@ QString TimerDialog::formattedTime() const {
     int hours = remainingTimeSec / 3600;
     int minutes = (remainingTimeSec % 3600) / 60;
     int seconds = remainingTimeSec % 60;
-    QString result = QString::number(hours) + ":" + QString::number(minutes) + ":" + QString::number(seconds);
+    QString result = QString::asprintf("%02d:%02d:%02d", hours, minutes, seconds);
     return result;
 }
 
@@ -110,7 +110,6 @@ void TimerDialog::updateTimerCountDown() {
     } else {
         LOG4CXX_INFO(logger, "Timer stopped");
         timer->stop();
-        QApplication::beep();
         emit timerFinished(currentType);
         QMessageBox::information(this, "Timer stopped",
                                  QString("%1-Timer has expired").arg(timerTypeName()));

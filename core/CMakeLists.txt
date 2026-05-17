@@ -19,5 +19,7 @@ target_include_directories(corelib PUBLIC
 
 target_link_libraries(corelib PUBLIC
 	Qt6::Widgets
+	Qt6::Multimedia
 	log4cxx
+
 )
