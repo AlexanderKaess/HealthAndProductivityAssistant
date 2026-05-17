@@ -169,8 +169,11 @@ void MainWindow::stopAllTimers() {
         return;
     }
 
-    auto reply = QMessageBox::question(this, "Stop all timers",
-                                       QString("Do you wanna stop all %1 timer?").arg(activeTimers.size()));
+    auto reply = QMessageBox::Yes;
+    if(ui->popupCheckBox->isChecked()){
+        reply = QMessageBox::question(this, "Stop all timers",
+                                      QString("Do you wanna stop all %1 timer?").arg(activeTimers.size()));
+    }
 
     if (reply == QMessageBox::Yes) {
         const auto timers = activeTimers;
@@ -186,6 +189,7 @@ void MainWindow::stopAllTimers() {
 void MainWindow::openTimerDialog(const TimerDialog::TimerType &timerType) {
     LOG4CXX_INFO(logger, "Open timer dialog");
     QPointer<TimerDialog> dialog = new TimerDialog(timerType, this);
+    dialog->setPopUpNotification(ui->popupCheckBox->isChecked());
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     activeTimers.append(dialog);
 

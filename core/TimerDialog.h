@@ -33,6 +33,10 @@ public:
     QString timerTypeName() const;
     QString formattedTime() const;
 
+    void setPopUpNotification(int usePopUp){
+        usePopUpNotification = usePopUp;
+    }
+
 signals:
     void timerFinished(TimerDialog::TimerType type);
     void timerTick(int remainingTime);
@@ -55,4 +59,5 @@ private:
     QTimer *timer;
     int remainingTimeSec{};
     int initialSeconds{};
+    bool usePopUpNotification{};
 };

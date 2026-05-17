@@ -12,6 +12,7 @@ TimerDialog::TimerDialog(TimerType type, QWidget *parent)
     , currentType(type)
     , remainingTimeSec(0)
     , initialSeconds(0)
+    , usePopUpNotification(false)
 {
     LOG4CXX_INFO(logger, "TimerDialog started ...");
     ui->setupUi(this);
@@ -113,8 +114,11 @@ void TimerDialog::updateTimerCountDown() {
         LOG4CXX_INFO(logger, "Timer stopped");
         timer->stop();
         emit timerFinished(currentType);
-        QMessageBox::information(this, "Timer stopped",
-                                 QString("%1-Timer has expired").arg(timerTypeName()));
+
+        if(usePopUpNotification){
+            QMessageBox::information(this, "Timer stopped",
+                                     QString("%1-Timer has expired").arg(timerTypeName()));
+        }
         ui->startButton->setEnabled(true);
         ui->stopButton->setEnabled(false);
     }
@@ -123,9 +127,12 @@ void TimerDialog::updateTimerCountDown() {
 void TimerDialog::closeEvent(QCloseEvent *event) {
     LOG4CXX_INFO(logger, "Close ...");
     if (timer->isActive()) {
-        auto reply = QMessageBox::question(this, "Timer is running",
+        auto reply = QMessageBox::Yes;
+        if(usePopUpNotification){
+            reply = QMessageBox::question(this, "Timer is running",
                                            "The timer is still running. Do you want to close it??",
                                            QMessageBox::Yes | QMessageBox::No);
+        }
         if (reply != QMessageBox::Yes) {
             event->ignore();
             return;
