@@ -49,28 +49,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="descriptionLabel">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-       <italic>true</italic>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #7f8c8d;</string>
-     </property>
-     <property name="text">
-      <string>timer description</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QLabel" name="timeDisplayLabel">
      <property name="font">
       <font>
