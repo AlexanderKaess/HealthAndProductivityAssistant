@@ -252,7 +252,7 @@ void MainWindow::cleanUpTimers() {
 
 void MainWindow::applyLanguage(const QString &localLanguage) {
     if(!translator) {
-        qDebug() << "TRANSLATOR IS NULL - creating new one";
+        LOG4CXX_WARN(logger, "TRANSLATOR IS NULL - creating new one");
         translator = new QTranslator(this);
     }
 
@@ -268,7 +268,7 @@ void MainWindow::applyLanguage(const QString &localLanguage) {
     }
 
     if(!QFile::exists(languagePath)){
-        LOG4CXX_INFO(logger, "Error while loading language file");
+        LOG4CXX_ERROR(logger, "Error while loading language file");
         return;
     }
 
