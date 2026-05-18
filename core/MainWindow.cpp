@@ -25,11 +25,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(refreshTimer, &QTimer::timeout, this, &MainWindow::refreshActiveTimers);
     refreshTimer->start();
     refreshActiveTimers();
+    translator = new QTranslator(this);
 
     // set the current theme index to 1 = dark
     ui->themeComboBox->setCurrentIndex(1);
     // set the current sound check box to unchecked
     ui->soundCheckBox->setCheckState(Qt::Unchecked);
+    // set the current language index to 1 = english
+    ui->languageComboBox->setCurrentIndex(1);
 
     statusBar()->showMessage("ready ...", 3000);
 }
@@ -248,10 +251,32 @@ void MainWindow::cleanUpTimers() {
 }
 
 void MainWindow::applyLanguage(const QString &localLanguage) {
+    if(!translator) {
+        qDebug() << "TRANSLATOR IS NULL - creating new one";
+        translator = new QTranslator(this);
+    }
+
+    //remove old translator
     qApp->removeTranslator(translator);
-    if(translator->load(QString(":/translations/HealthAndProductivityAssistant_%1.ts").arg(localLanguage))){
+
+    //load language file
+    QString languagePath{};
+    if(localLanguage == "de"){
+        languagePath = ":/i18n/HealthAndProductivityAssistant_de.qm";
+    } else {
+        languagePath = ":/i18n/HealthAndProductivityAssistant_en.qm";
+    }
+
+    if(!QFile::exists(languagePath)){
+        LOG4CXX_INFO(logger, "Error while loading language file");
+        return;
+    }
+
+    if(translator->load(languagePath)){
         qApp->installTranslator(translator);
+        ui->retranslateUi(this);
+        LOG4CXX_INFO(logger, "Language loaded: " << localLanguage.toStdString());
     }else {
-        LOG4CXX_WARN(logger, "Could not load translation file");
+        LOG4CXX_WARN(logger, "Could not load translation file: " << localLanguage.toStdString());
     }
 }

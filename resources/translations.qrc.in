@@ -1,0 +1,6 @@
+<RCC>
+	<qresource prefix="/i18n">
+		<file alias="HealthAndProductivityAssistant_de.qm">@CMAKE_BINARY_DIR@/HealthAndProductivityAssistant_de.qm</file>
+		<file alias="HealthAndProductivityAssistant_en.qm">@CMAKE_BINARY_DIR@/HealthAndProductivityAssistant_en.qm</file>
+	</qresource>
+</RCC>

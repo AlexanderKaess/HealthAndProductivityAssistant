@@ -13,7 +13,7 @@
     <message><source>fresh air</source><translation>fresh air</translation></message>
     <message><source>working hours tracker</source><translation>working hours tracker</translation></message>
     <message><source>break</source><translation>break</translation></message>
-    <message><source>stand up & move</source><translation>stand up & move</translation></message>
+    <message><source>stand up and move</source><translation>stand up and move</translation></message>
     <message><source>timer selection</source><translation>timer selection</translation></message>
     <message><source>overview</source><translation>timer selection</translation></message>
     <message><source>settings</source><translation>settings</translation></message>

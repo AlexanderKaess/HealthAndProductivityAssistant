@@ -13,7 +13,7 @@
 	<message><source>fresh air</source><translation>Lüften</translation></message>
 	<message><source>working hours tracker</source><translation>Arbeitszeit Tracker</translation></message>
 	<message><source>break</source><translation>Pause</translation></message>
-	<message><source>stand up & move</source><translation>Aufstehen und bewegen</translation></message>
+	<message><source>stand up and move</source><translation>Aufstehen und bewegen</translation></message>
 	<message><source>timer selection</source><translation>Timer Auswahl</translation></message>
 	<message><source>overview</source><translation>Übersicht</translation></message>
 	<message><source>settings</source><translation>Einstellungen</translation></message>
