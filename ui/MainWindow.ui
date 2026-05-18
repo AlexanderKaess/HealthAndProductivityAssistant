@@ -34,11 +34,11 @@
        <string notr="true">QTabBar::tab { padding: 10px 20px; width: 200; height: 35; font-size: 11pt; } QTabBar::tab:selected { background: #3498db; color: white; font-weight: bold; }</string>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabTimerSelection">
        <attribute name="title">
-        <string>🕐 timer selection</string>
+        <string>timer selection</string>
        </attribute>
        <layout class="QVBoxLayout" name="tab1Layout">
         <item>
@@ -60,7 +60,7 @@
            <string notr="true">QPushButton {height: 40; background-color: #e74c3c; color: white; font-size: 13pt; font-weight: bold; border-radius: 8px; } QPushButton:hover { background-color: #c0392b; }</string>
           </property>
           <property name="text">
-           <string>🍅 pomodoro timer</string>
+           <string>pomodoro timer</string>
           </property>
          </widget>
         </item>
@@ -70,7 +70,7 @@
            <string>QPushButton { height: 40; background-color: #3498db; color: white; font-size: 13pt; font-weight: bold; border-radius: 8px; } QPushButton:hover { background-color: #2980b9; }</string>
           </property>
           <property name="text">
-           <string>💧 stay hydrated reminder</string>
+           <string>stay hydrated reminder</string>
           </property>
          </widget>
         </item>
@@ -80,7 +80,7 @@
            <string>QPushButton { height: 40; background-color: #1abc9c; color: white; font-size: 13pt; font-weight: bold; border-radius: 8px; } QPushButton:hover { background-color: #16a085; }</string>
           </property>
           <property name="text">
-           <string>🌬️ fresh air</string>
+           <string>fresh air</string>
           </property>
          </widget>
         </item>
@@ -96,7 +96,7 @@
            <string>QPushButton { height: 40; background-color: #9b59b6; color: white; font-size: 13pt; font-weight: bold; border-radius: 8px; } QPushButton:hover { background-color: #8e44ad; }</string>
           </property>
           <property name="text">
-           <string>💼 working hours tracker</string>
+           <string>working hours tracker</string>
           </property>
          </widget>
         </item>
@@ -106,7 +106,7 @@
            <string>QPushButton { height: 40; background-color: #f39c12; color: white; font-size: 13pt; font-weight: bold; border-radius: 8px; } QPushButton:hover { background-color: #e67e22; }</string>
           </property>
           <property name="text">
-           <string>☕ break</string>
+           <string>break</string>
           </property>
          </widget>
         </item>
@@ -116,7 +116,7 @@
            <string>QPushButton { height: 40; background-color: #27ae60; color: white; font-size: 13pt; font-weight: bold; border-radius: 8px; } QPushButton:hover { background-color: #229954; }</string>
           </property>
           <property name="text">
-           <string>🚶 stand up &amp; move</string>
+           <string>stand up &amp; move</string>
           </property>
          </widget>
         </item>
@@ -137,7 +137,7 @@
       </widget>
       <widget class="QWidget" name="tabOverview">
        <attribute name="title">
-        <string>📊 overview</string>
+        <string>overview</string>
        </attribute>
        <layout class="QVBoxLayout" name="tab2Layout">
         <item>
@@ -214,7 +214,7 @@
              <string>QPushButton { background-color: #3498db; color: white; font-weight: bold; border-radius: 5px; padding: 8px; } QPushButton:hover { background-color: #2980b9; }</string>
             </property>
             <property name="text">
-             <string>🔄 update</string>
+             <string>update</string>
             </property>
            </widget>
           </item>
@@ -224,7 +224,7 @@
              <string>QPushButton { background-color: #e74c3c; color: white; font-weight: bold; border-radius: 5px; padding: 8px; } QPushButton:hover { background-color: #c0392b; }</string>
             </property>
             <property name="text">
-             <string>⏹ stop all</string>
+             <string>stop all</string>
             </property>
            </widget>
           </item>
@@ -234,7 +234,7 @@
       </widget>
       <widget class="QWidget" name="tabSettings">
        <attribute name="title">
-        <string>⚙️ settings</string>
+        <string>settings</string>
        </attribute>
        <layout class="QVBoxLayout" name="tab3Layout">
         <item>
@@ -256,7 +256,7 @@
            <string>QGroupBox { font-weight: bold; border: 2px solid #bdc3c7; border-radius: 5px; margin-top: 10px; padding-top: 10px; } QGroupBox::title { left: 10px; padding: 0 5px; }</string>
           </property>
           <property name="title">
-           <string>🔔 notifications</string>
+           <string>notifications</string>
           </property>
           <layout class="QVBoxLayout" name="notificationLayout">
            <item>
@@ -322,20 +322,20 @@
            <string>QGroupBox { font-weight: bold; border: 2px solid #bdc3c7; border-radius: 5px; margin-top: 10px; padding-top: 10px; } QGroupBox::title { left: 10px; padding: 0 5px; }</string>
           </property>
           <property name="title">
-           <string>🎨 appearance</string>
+           <string>appearance</string>
           </property>
           <layout class="QFormLayout" name="appearanceLayout">
            <item row="2" column="0">
             <widget class="QLabel" name="languageLabel">
              <property name="text">
-              <string>language:</string>
+              <string>language</string>
              </property>
             </widget>
            </item>
            <item row="3" column="0">
             <widget class="QLabel" name="themeLabel">
              <property name="text">
-              <string>theme:</string>
+              <string>theme</string>
              </property>
             </widget>
            </item>
@@ -376,7 +376,7 @@
            <string>QGroupBox { font-weight: bold; border: 2px solid #bdc3c7; border-radius: 5px; margin-top: 10px; padding-top: 10px; } QGroupBox::title { left: 10px; padding: 0 5px; }</string>
           </property>
           <property name="title">
-           <string>⚡ behavior</string>
+           <string>behavior</string>
           </property>
           <layout class="QVBoxLayout" name="behaviorLayout">
            <item>
@@ -413,7 +413,7 @@
              <string>QPushButton { background-color: #95a5a6; color: white; font-weight: bold; border-radius: 5px; padding: 8px; } QPushButton:hover { background-color: #7f8c8d; }</string>
             </property>
             <property name="text">
-             <string>🔄 reset</string>
+             <string>reset</string>
             </property>
            </widget>
           </item>
@@ -423,7 +423,7 @@
              <string>QPushButton { background-color: #27ae60; color: white; font-weight: bold; border-radius: 5px; padding: 8px; } QPushButton:hover { background-color: #229954; }</string>
             </property>
             <property name="text">
-             <string>💾 save</string>
+             <string>save</string>
             </property>
            </widget>
           </item>

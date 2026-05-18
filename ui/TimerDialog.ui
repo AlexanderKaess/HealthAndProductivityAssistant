@@ -179,7 +179,7 @@ QPushButton:disabled {
 }</string>
        </property>
        <property name="text">
-        <string>▶ start</string>
+        <string>start</string>
        </property>
       </widget>
      </item>
@@ -215,7 +215,7 @@ QPushButton:disabled {
 }</string>
        </property>
        <property name="text">
-        <string>⏹ stop</string>
+        <string>stop</string>
        </property>
       </widget>
      </item>
@@ -245,7 +245,7 @@ QPushButton:hover {
 }</string>
        </property>
        <property name="text">
-        <string>🔄 reset</string>
+        <string>reset</string>
        </property>
       </widget>
      </item>
@@ -275,7 +275,7 @@ QPushButton:hover {
 }</string>
        </property>
        <property name="text">
-        <string>✖ close</string>
+        <string>close</string>
        </property>
       </widget>
      </item>

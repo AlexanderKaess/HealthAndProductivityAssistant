@@ -56,15 +56,7 @@ qt_add_translations(HealthAndProductivityAssistant
     TS_FILES
         resources/translations/HealthAndProductivityAssistant_de.ts
         resources/translations/HealthAndProductivityAssistant_en.ts
-    # QM_FILES_OUTPUT_VARIABLE QM_FILES
-    # RESOURCE_PREFIX "/i18n"
 )
-
-# qt_add_resources(HealthAndProductivityAssistant "translations"
-#     PREFIX "/i18n"
-#     BASE ${CMAKE_BINARY_DIR}
-#     FILES ${QM_FILES}
-# )
 
 configure_file(
     ${CMAKE_SOURCE_DIR}/resources/Info.plist.in
