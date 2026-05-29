@@ -1,14 +1,18 @@
 message("----------")
 message("add core files to sources variable")
 set(CORE_SOURCES
+	InactivityDialog.h
+	InactivityDialog.cpp
+	InactivityWatcher.h
+	InactivityWatcher.cpp
 	MainWindow.h
 	MainWindow.cpp
-	TimerDialog.h
-	TimerDialog.cpp
-	ThemeManager.h
-	ThemeManager.cpp
 	SoundManager.h
 	SoundManager.cpp
+	ThemeManager.h
+	ThemeManager.cpp
+	TimerDialog.h
+	TimerDialog.cpp
 )
 
 add_library(corelib ${CORE_SOURCES})
@@ -21,5 +25,4 @@ target_link_libraries(corelib PUBLIC
 	Qt6::Widgets
 	Qt6::Multimedia
 	log4cxx
-
 )
