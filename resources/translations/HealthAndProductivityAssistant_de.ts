@@ -51,5 +51,9 @@
 	<message><source>stop</source><translation>Stop</translation></message>
 	<message><source>reset</source><translation>Reset</translation></message>
 	<message><source>close</source><translation>Schließen</translation></message>
+	<message><source>keyboard and mouse monitoring</source>
+			<translation>Überwachung von Tastatur und Maus</translation></message>
+	<message><source>There has been no keyboard or mouse input in the last 10 minutes</source>
+			<translation>In den letzten 10 Minuten gab es keine Tastatur- oder Mauseingabe</translation></message>
 </context>
 </TS>

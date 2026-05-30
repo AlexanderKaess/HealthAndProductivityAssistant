@@ -1,6 +1,7 @@
 message("----------")
 message("add ui files to sources variable")
 set(UI_SOURCES
+	InactivityDialog.ui
 	MainWindow.ui
 	TimerDialog.ui
 )
