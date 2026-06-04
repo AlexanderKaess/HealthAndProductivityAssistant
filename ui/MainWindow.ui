@@ -34,7 +34,7 @@
        <string notr="true">QTabBar::tab { padding: 10px 20px; width: 200; height: 35; font-size: 11pt; } QTabBar::tab:selected { background: #3498db; color: white; font-weight: bold; }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tabTimerSelection">
        <attribute name="title">
@@ -252,14 +252,26 @@
         </item>
         <item>
          <widget class="QGroupBox" name="notificationGroup">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>150</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>150</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string>QGroupBox { font-weight: bold; border: 2px solid #bdc3c7; border-radius: 5px; margin-top: 10px; padding-top: 10px; } QGroupBox::title { left: 10px; padding: 0 5px; }</string>
           </property>
           <property name="title">
            <string>notifications</string>
           </property>
-          <layout class="QVBoxLayout" name="notificationLayout">
-           <item>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
             <widget class="QCheckBox" name="soundCheckBox">
              <property name="enabled">
               <bool>true</bool>
@@ -272,7 +284,7 @@
              </property>
             </widget>
            </item>
-           <item>
+           <item row="1" column="0">
             <widget class="QCheckBox" name="popupCheckBox">
              <property name="text">
               <string>show popup notification</string>
@@ -282,7 +294,17 @@
              </property>
             </widget>
            </item>
-           <item>
+           <item row="2" column="0">
+            <widget class="QCheckBox" name="monitoringCheckBox">
+             <property name="text">
+              <string>keyboard and mouse monitoring</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
             <layout class="QHBoxLayout" name="volumeLayout">
              <item>
               <widget class="QLabel" name="volumeLabel">
