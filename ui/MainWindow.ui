@@ -304,6 +304,34 @@
              </property>
             </widget>
            </item>
+           <item row="2" column="1">
+            <widget class="QSpinBox" name="spinTimeout">
+             <property name="minimumSize">
+              <size>
+               <width>150</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Timeout zwischen 1 und 60 Minuten</string>
+             </property>
+             <property name="suffix">
+              <string> min</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>60</number>
+             </property>
+             <property name="singleStep">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>10</number>
+             </property>
+            </widget>
+           </item>
            <item row="3" column="0">
             <layout class="QHBoxLayout" name="volumeLayout">
              <item>
