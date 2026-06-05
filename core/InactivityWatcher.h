@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QEvent>
 #include <QApplication>
+#include <QCoreApplication>
 
 class InactivityWatcher : public QObject
 {
@@ -12,7 +13,7 @@ class InactivityWatcher : public QObject
     Q_OBJECT
 
 public:
-    explicit InactivityWatcher(QObject * patent = nullptr);
+    explicit InactivityWatcher(QObject* parent = nullptr);
     ~InactivityWatcher() override;
 
     void start(int timeOutMs);

@@ -64,5 +64,5 @@ private:
     QTimer *refreshTimer{};
     int completedCount{};
     QTranslator *translator = nullptr;
-    QPointer<InactivityWatcher> watcher = nullptr;
+    InactivityWatcher* watcher = nullptr;
 };

@@ -4,8 +4,8 @@ InactivityWatcher::InactivityWatcher(QObject *parent)
     : QObject(parent)
     , logger(log4cxx::Logger::getLogger("HealthLogger.InactivityWatcher"))
 {
-    LOG4CXX_INFO(logger, "InactivityWatcher created");
     timer.setSingleShot(true);
+    LOG4CXX_INFO(logger, "InactivityWatcher created");
 
     connect(&timer, &QTimer::timeout, this, &InactivityWatcher::inactivityDetected);
 }
@@ -15,16 +15,30 @@ InactivityWatcher::~InactivityWatcher() {
 }
 
 void InactivityWatcher::start(int timeOutMs) {
+    if (!QCoreApplication::instance()) {
+        qWarning("InactivityWatcher::start() — QApplication not initilized");
+        return;
+    }
+
+    if (running){
+        stop();
+    }
+
     LOG4CXX_INFO(logger, "InactivityWatcher started ...");
-    qApp->installEventFilter(this);
+    QCoreApplication::instance()->installEventFilter(this);
     running = true;
     timer.start(timeOutMs);
 }
 
 void InactivityWatcher::stop() {
     LOG4CXX_INFO(logger, "InactivityWatcher stopped ...");
+    if (!running){
+        return;
+    }
     timer.stop();
-    qApp->removeEventFilter(this);
+    if (QCoreApplication::instance()){
+        QCoreApplication::instance()->removeEventFilter(this);
+    }
     running = false;
 }
 

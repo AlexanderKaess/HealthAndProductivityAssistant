@@ -18,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("HealthAndProductivityAssistant");
     LOG4CXX_INFO(logger, "Mainwindow started ...");
 
+    translator = new QTranslator(this);
+    watcher = new InactivityWatcher(this);
+
     //connect all signals and slots
     connectSignals();
     loadSettings();
@@ -26,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(refreshTimer, &QTimer::timeout, this, &MainWindow::refreshActiveTimers);
     refreshTimer->start();
     refreshActiveTimers();
-    translator = new QTranslator(this);
 
     // set the current theme index to 1 = dark
     ui->themeComboBox->setCurrentIndex(1);
@@ -276,7 +278,7 @@ void MainWindow::connectSignals() {
     connect(ui->soundCheckBox, &QCheckBox::toggled, &SoundManager::instance(), &SoundManager::setEnabled);
     connect(ui->languageComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onLanguageChanged);
     connect(ui->monitoringCheckBox, &QCheckBox::checkStateChanged, this, &MainWindow::onMonitoringChanged);
-    connect(watcher.get(), &InactivityWatcher::inactivityDetected, this, &MainWindow::onInactivityDetected);
+    connect(watcher, &InactivityWatcher::inactivityDetected, this, &MainWindow::onInactivityDetected);
 }
 
 void MainWindow::cleanUpTimers() {
