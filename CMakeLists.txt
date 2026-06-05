@@ -79,6 +79,7 @@ target_link_libraries(HealthAndProductivityAssistant PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Multimedia
+    appcontrollerlib
     corelib
     uilib
     log4cxx

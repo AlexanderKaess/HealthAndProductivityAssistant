@@ -1,6 +1,8 @@
 message("----------")
 message("add core files to sources variable")
 set(CORE_SOURCES
+	AppSettings.h
+	AppSettings.cpp
 	InactivityDialog.h
 	InactivityDialog.cpp
 	InactivityWatcher.h
