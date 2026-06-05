@@ -10,6 +10,8 @@
 
 #include "TimerDialog.h"
 #include "InactivityWatcher.h"
+#include "ThemeManager.h"
+#include "SoundManager.h"
 #include "InactivityDialog.h"
 
 QT_BEGIN_NAMESPACE

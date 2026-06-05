@@ -6,6 +6,7 @@ InactivityDialog::InactivityDialog(QWidget* parent)
     , ui(new Ui::InactivityDialog)
 {
     ui->setupUi(this);
+    connect(ui->okPushButton, &QPushButton::clicked, this, &InactivityDialog::accept);
 
     if (const QScreen* screen = QApplication::primaryScreen())
     {

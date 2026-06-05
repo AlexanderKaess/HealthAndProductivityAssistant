@@ -4,9 +4,6 @@
 
 #include "MainWindow.h"
 #include "../ui/ui_MainWindow.h"
-#include "TimerDialog.h"
-#include "ThemeManager.h"
-#include "SoundManager.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
