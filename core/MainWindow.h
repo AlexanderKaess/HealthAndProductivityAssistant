@@ -9,6 +9,8 @@
 #include <QLocale>
 
 #include "TimerDialog.h"
+#include "InactivityWatcher.h"
+#include "InactivityDialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -44,6 +46,8 @@ private slots:
     void onVolumeChanged(int value);
     void onThemeChanged(int index);
     void onLanguageChanged(int index);
+    void onMonitoringChanged();
+    void onInactivityDetected();
 
 private:
     void closeEvent(QCloseEvent *event) override;
@@ -52,12 +56,13 @@ private:
     void connectSignals();
     void cleanUpTimers();
     void applyLanguage(const QString &localLanguage);
+    void monitoringUpdateStatus(bool monitoringActive);
 
     Ui::MainWindow *ui;
     log4cxx::LoggerPtr logger;
     QList<QPointer<TimerDialog>> activeTimers;
-    QTimer *refreshTimer;
-    int completedCount = 0;
+    QTimer *refreshTimer{};
+    int completedCount{};
     QTranslator *translator = nullptr;
-
+    QPointer<InactivityWatcher> watcher = nullptr;
 };

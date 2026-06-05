@@ -35,7 +35,7 @@
       <string>font-size: 12px; color: #1a1a1a;</string>
      </property>
      <property name="text">
-      <string>Keine Tastatur- oder Mauseingabe in den letzten 10 Min.</string>
+      <string>No keyboard or mouse input during monitoring detected.</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignHCenter</set>

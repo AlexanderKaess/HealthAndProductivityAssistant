@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("HealthAndProductivityAssistant");
     LOG4CXX_INFO(logger, "Mainwindow started ...");
 
+    //connect all signals and slots
     connectSignals();
     loadSettings();
 
@@ -120,6 +121,40 @@ void MainWindow::onThemeChanged(int index) {
 void MainWindow::onLanguageChanged(int index) {
     const QString localLanguage = (index == 0) ? "de" : "en";
     applyLanguage(localLanguage);
+}
+
+void MainWindow::onMonitoringChanged() {
+    LOG4CXX_INFO(logger, "Monitoring status changed");
+
+    if(ui->monitoringCheckBox->isChecked()){
+        LOG4CXX_INFO(logger, "Monitoring start");
+        const int timeOutMs = ui->monitoringSpinTimeout->value() * 60 * 1000;
+        watcher->start(timeOutMs);
+        monitoringUpdateStatus(true);
+    }else{
+        LOG4CXX_INFO(logger, "Monitoring stop");
+        watcher->stop();
+        monitoringUpdateStatus(false);
+    }
+}
+
+void MainWindow::onInactivityDetected() {
+    LOG4CXX_INFO(logger, "Inactivity detected");
+    watcher->stop();
+    monitoringUpdateStatus(false);
+
+    auto* dialog = new InactivityDialog(this);
+
+    connect(dialog, &InactivityDialog::finished,
+            this, [this](int)
+            {
+                onMonitoringChanged();
+            });
+
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->show();
+    dialog->raise();
+    dialog->activateWindow();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
@@ -240,6 +275,8 @@ void MainWindow::connectSignals() {
     connect(ui->themeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onThemeChanged);
     connect(ui->soundCheckBox, &QCheckBox::toggled, &SoundManager::instance(), &SoundManager::setEnabled);
     connect(ui->languageComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onLanguageChanged);
+    connect(ui->monitoringCheckBox, &QCheckBox::checkStateChanged, this, &MainWindow::onMonitoringChanged);
+    connect(watcher.get(), &InactivityWatcher::inactivityDetected, this, &MainWindow::onInactivityDetected);
 }
 
 void MainWindow::cleanUpTimers() {
@@ -278,5 +315,14 @@ void MainWindow::applyLanguage(const QString &localLanguage) {
         LOG4CXX_INFO(logger, "Language loaded: " << localLanguage.toStdString());
     }else {
         LOG4CXX_WARN(logger, "Could not load translation file: " << localLanguage.toStdString());
+    }
+}
+
+void MainWindow::monitoringUpdateStatus(bool monitoringActive)
+{
+    if (monitoringActive) {
+        statusBar()->showMessage("Monitoring activ", 5000);
+    }  else  {
+        statusBar()->showMessage("Monitoring inactiv", 5000);
     }
 }
