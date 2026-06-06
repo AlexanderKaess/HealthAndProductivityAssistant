@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include <QCoreApplication>
+
 #include "AppSettings.h"
 
 class AppSettingsTest : public ::testing::Test

@@ -35,6 +35,7 @@ macro(add_mvc_test TEST_NAME TEST_FILE)
 endmacro()
 
 add_mvc_test(AppSettingsTest AppSettingsTest.cpp)
+add_mvc_test(TimerDialogTest TimerDialogTest.cpp)
 
 
 message("--------------------")
