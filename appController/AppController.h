@@ -27,7 +27,9 @@ public:
 
     void start();
 
-    AppSettings* getSettings() const { return settings; }
+    AppSettings* getAppSettings() const { return settings; }
+    InactivityWatcher* getInactivityWatcher() { return watcher; }
+    QList<QPointer<TimerDialog>> getActiveTimers() {return activeTimers; }
     int getActiveTimerCount()const { return activeTimers.size(); }
 
     struct TimerInfo {
@@ -53,6 +55,10 @@ public slots:
     void setMonitoringEnabled(bool enabled, int timeoutMinutes = 20);
     void requestClose();
 
+    void onTimerDestroyed();
+    void onTimerFinished();
+    void onInactivityDetected();
+
 signals:
     void activeTimersChanged();
     void statusMessage(const QString& msg, int timeoutMs = 3000);
@@ -60,11 +66,6 @@ signals:
     void inactivityDetected();
     void timerFinishedNotification(const QString& timerName);
     void languageChanged(const QString& locale);
-
-private slots:
-    void onTimerDestroyed(QObject* obj);
-    void onTimerFinished(TimerDialog::TimerType type);
-    void onInactivityDetected();
 
 private:
     void cleanUpTimers();

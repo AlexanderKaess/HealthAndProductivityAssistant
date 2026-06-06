@@ -34,8 +34,12 @@ macro(add_mvc_test TEST_NAME TEST_FILE)
 	add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
 endmacro()
 
+add_mvc_test(AppControllerTest AppControllerTest.cpp)
 add_mvc_test(AppSettingsTest AppSettingsTest.cpp)
+add_mvc_test(InactivityWatcherTest InactivityWatcherTest.cpp)
+add_mvc_test(MainWindowTest MainWindowTest.cpp)
+add_mvc_test(SoundManagerTest SoundManagerTest.cpp)
+add_mvc_test(ThemeManagerTest ThemeManagerTest.cpp)
 add_mvc_test(TimerDialogTest TimerDialogTest.cpp)
-
 
 message("--------------------")

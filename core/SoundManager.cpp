@@ -20,10 +20,9 @@ SoundManager::SoundManager(QObject *parent) :
     if (!mediaPlayer->errorString().isEmpty()) {
         LOG4CXX_INFO(logger, "Mediaplayer not ready. Status: "  + mediaPlayer->errorString().toStdString());
     }
-
 }
 
-SoundManager &SoundManager::instance() {
+SoundManager& SoundManager::instance() {
     static SoundManager instance;
     return instance;
 }

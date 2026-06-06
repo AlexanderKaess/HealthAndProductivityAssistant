@@ -108,15 +108,14 @@ void AppController::stopAllTimers()
     }
 }
 
-void AppController::onTimerDestroyed(QObject* obj)
+void AppController::onTimerDestroyed()
 {
     cleanUpTimers();
     emit activeTimersChanged();
 }
 
-void AppController::onTimerFinished(TimerDialog::TimerType type)
+void AppController::onTimerFinished()
 {
-    Q_UNUSED(type)
     SoundManager::instance().playNotification();
 }
 

@@ -4,8 +4,8 @@
 
 ThemeManager& ThemeManager::instance()
 {
-    static ThemeManager mgr;
-    return mgr;
+    static ThemeManager instance;
+    return instance;
 }
 
 ThemeManager::ThemeManager(QObject *parent)

@@ -17,7 +17,7 @@ public:
 
     static ThemeManager& instance();
     void applyTheme(Theme theme);
-    Theme getCcurrentTheme() const { return currentTheme; }
+    Theme getCurrentTheme() const { return currentTheme; }
 
 signals:
     void themeChanged(ThemeManager::Theme theme);
