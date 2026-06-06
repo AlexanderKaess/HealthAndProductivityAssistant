@@ -29,7 +29,8 @@ int main(int argc, char *argv[])
     LOG4CXX_INFO(logger, "Program HealthAndProductivityAssistant started...");
     LOG4CXX_INFO(logger, "Working dir:" << QDir::currentPath().toStdString());
 
-    MainWindow w;
-    w.show();
+    AppController controller;
+    controller.start();
+
     return a.exec();
 }

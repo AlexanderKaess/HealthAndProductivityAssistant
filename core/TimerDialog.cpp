@@ -67,6 +67,14 @@ QString TimerDialog::formattedTime() const {
     return result;
 }
 
+void TimerDialog::start(int intervalMs = 0) {
+    timer->start(intervalMs);
+}
+
+void TimerDialog::stop() {
+    timer->stop();
+}
+
 void TimerDialog::onStartClicked() {
     LOG4CXX_INFO(logger, "Start timer clicked ...");
     if (!timer->isActive()) {
@@ -93,12 +101,19 @@ void TimerDialog::onStopClicked() {
     ui->stopButton->setEnabled(false);
 }
 
-void TimerDialog::onResetClicked() {
-    LOG4CXX_INFO(logger, "Reset timer clicked ...");
+void TimerDialog::resetTimer()
+{
+    LOG4CXX_INFO(logger, "Reset timer");
     timer->stop();
     remainingTimeSec = initialSeconds;
 
     updateDisplay();
+}
+
+void TimerDialog::onResetClicked()
+{
+    LOG4CXX_INFO(logger, "Reset timer clicked ...");
+    resetTimer();
 
     ui->startButton->setEnabled(true);
     ui->stopButton->setEnabled(false);

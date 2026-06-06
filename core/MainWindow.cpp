@@ -1,40 +1,41 @@
-#include <QPointer>
-#include <QCloseEvent>
-#include <QSettings>
-
 #include "MainWindow.h"
 #include "../ui/ui_MainWindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
+#include <QTableWidgetItem>
+#include <QPushButton>
+
+MainWindow::MainWindow(AppController* controller, QWidget* parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
     , logger(log4cxx::Logger::getLogger("HealthLogger.MainWindow"))
-    , refreshTimer(new QTimer(this))
+    , ui(new Ui::MainWindow)
+    , controller(controller)
 {
     ui->setupUi(this);
-    setWindowTitle("HealthAndProductivityAssistant");
-    LOG4CXX_INFO(logger, "Mainwindow started ...");
+    connectUiSignals();
 
-    translator = new QTranslator(this);
-    watcher = new InactivityWatcher(this);
+    // connection of controller and view
+    connect(controller, &AppController::activeTimersChanged, this, &MainWindow::onActiveTimersChanged);
+    connect(controller, &AppController::statusMessage, this, &MainWindow::onStatusMessage);
+    connect(controller, &AppController::monitoringStatusChanged, this, &MainWindow::onMonitoringStatusChanged);
+    connect(controller, &AppController::languageChanged, this, &MainWindow::onLanguageChanged);
 
-    //connect all signals and slots
-    connectSignals();
-    loadSettings();
+    // connection of settings-model and view
+    const AppSettings* appSettings = controller->getSettings();
+    connect(appSettings, &AppSettings::volumeChanged,
+            this, [this](int v){
+                ui->volumeSlider->setValue(v);
+                ui->volumeValueLabel->setText(QString("%1%").arg(v));
+            });
+    connect(appSettings, &AppSettings::soundEnabledChanged, ui->soundCheckBox, &QCheckBox::setChecked);
+    connect(appSettings, &AppSettings::popupEnabledChanged, ui->popupCheckBox, &QCheckBox::setChecked);
+    connect(appSettings, &AppSettings::confirmCloseChanged, ui->confirmCloseCheckBox, &QCheckBox::setChecked);
+    connect(appSettings, &AppSettings::themeIndexChanged, ui->themeComboBox, &QComboBox::setCurrentIndex);
+    connect(appSettings, &AppSettings::languageIndexChanged, ui->languageComboBox, &QComboBox::setCurrentIndex);
 
+    auto* refreshTimer = new QTimer(this);
     refreshTimer->setInterval(1000);
-    connect(refreshTimer, &QTimer::timeout, this, &MainWindow::refreshActiveTimers);
+    connect(refreshTimer, &QTimer::timeout, this, &MainWindow::onActiveTimersChanged);
     refreshTimer->start();
-    refreshActiveTimers();
-
-    // set the current theme index to 1 = dark
-    ui->themeComboBox->setCurrentIndex(1);
-    // set the current sound check box to unchecked
-    ui->soundCheckBox->setCheckState(Qt::Unchecked);
-    // set the current language index to 1 = english
-    ui->languageComboBox->setCurrentIndex(1);
-
-    statusBar()->showMessage("ready ...", 3000);
 }
 
 MainWindow::~MainWindow()
@@ -42,286 +43,113 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::onPomodoroTimerClicked()
+void MainWindow::initFromSettings(const AppSettings* settings)
 {
-    LOG4CXX_INFO(logger, "TimerDialog::POMODORO selected ...");
-    openTimerDialog(TimerDialog::TimerType::POMODORO);
+    // block signal to prevent feedback from occurring
+    QSignalBlocker blocker1(ui->soundCheckBox);
+    QSignalBlocker blocker2(ui->popupCheckBox);
+    QSignalBlocker blocker3(ui->volumeSlider);
+    QSignalBlocker blocker4(ui->themeComboBox);
+    QSignalBlocker blocker5(ui->languageComboBox);
+    QSignalBlocker blocker6(ui->confirmCloseCheckBox);
+
+    ui->soundCheckBox->setChecked(settings->getSoundEnabled());
+    ui->popupCheckBox->setChecked(settings->getPopupEnabled());
+    ui->volumeSlider->setValue(settings->getVolume());
+    ui->volumeValueLabel->setText(QString("%1%").arg(settings->getVolume()));
+    ui->themeComboBox->setCurrentIndex(settings->getThemeIndex());
+    ui->languageComboBox->setCurrentIndex(settings->getLanguageIndex());
+    ui->confirmCloseCheckBox->setChecked(settings->getConfirmClose());
 }
 
-void MainWindow::onStayHydratedClicked() {
-    LOG4CXX_INFO(logger, "TimerDialog::STAYHYDRATET selected ...");
-    openTimerDialog(TimerDialog::TimerType::STAYHYDRATET);
-}
+void MainWindow::connectUiSignals()
+{
+    connect(ui->pomodoroPushButton, &QPushButton::clicked, this, &MainWindow::pomodoroRequested);
+    connect(ui->stayHydratedPushButton,&QPushButton::clicked, this, &MainWindow::stayHydratedRequested);
+    connect(ui->freshAirPushButton, &QPushButton::clicked, this, &MainWindow::freshAirRequested);
+    connect(ui->workingHoursPushButton, &QPushButton::clicked, this, &MainWindow::workingHourRequested);
+    connect(ui->breakPushButton, &QPushButton::clicked, this, &MainWindow::breakRequested);
+    connect(ui->movementPushButton, &QPushButton::clicked, this, &MainWindow::movementRequested);
 
-void MainWindow::onFreshAirTimerClicked() {
-    LOG4CXX_INFO(logger, "TimerDialog::FRESHAIR selected ...");
-    openTimerDialog(TimerDialog::TimerType::FRESHAIR);
-}
+    connect(ui->refreshButton, &QPushButton::clicked, this, &MainWindow::onActiveTimersChanged);
+    connect(ui->stopAllButton, &QPushButton::clicked, this, &MainWindow::stopAllTimersRequested);
 
-void MainWindow::onWorkingHourTimerClicked() {
-    LOG4CXX_INFO(logger, "TimerDialog::WORKINGHOUR selected ...");
-    openTimerDialog(TimerDialog::TimerType::WORKINGHOUR);
-}
+    connect(ui->saveSettingsButton, &QPushButton::clicked, this, &MainWindow::saveSettingsRequested);
+    connect(ui->resetSettingsButton, &QPushButton::clicked, this, &MainWindow::resetSettingsRequested);
+    connect(ui->volumeSlider, &QSlider::valueChanged, this, &MainWindow::volumeChangeRequested);
+    connect(ui->themeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::themeChangeRequested);
+    connect(ui->languageComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::languageChangeRequested);
+    connect(ui->soundCheckBox, &QCheckBox::toggled, this, &MainWindow::soundEnabledChangeRequested);
 
-void MainWindow::onBreakTimerClicked() {
-    LOG4CXX_INFO(logger, "TimerDialog::BREAK selected ...");
-    openTimerDialog(TimerDialog::TimerType::BREAK);
-}
-
-void MainWindow::onMovementTimerClicked() {
-    LOG4CXX_INFO(logger, "TimerDialog::MOVEMENT selected ...");
-    openTimerDialog(TimerDialog::TimerType::MOVEMENT);
-}
-
-void MainWindow::onTimerFinished(TimerDialog::TimerType type){
-    completedCount++;
-    SoundManager::instance().playNotification();
-    refreshActiveTimers();
-}
-
-void MainWindow::saveSettings() {
-    QSettings s("MyCompany", "HealthProductivityApp");
-    s.setValue("sound",          ui->soundCheckBox->isChecked());
-    s.setValue("popup",          ui->popupCheckBox->isChecked());
-    s.setValue("volume",         ui->volumeSlider->value());
-    s.setValue("theme",          ui->themeComboBox->currentIndex());
-    s.setValue("language",       ui->languageComboBox->currentIndex());
-    s.setValue("confirmClose",   ui->confirmCloseCheckBox->isChecked());
-
-    QMessageBox::information(this, "Settings", "Settings safed!");
-    ui->statusbar->showMessage("Settings safed", 3000);
-}
-
-void MainWindow::resetSettings() {
-    LOG4CXX_INFO(logger, "Reset application settings");
-    auto reply = QMessageBox::question(this, "Reset", "Reset all settings?");
-    if (reply != QMessageBox::Yes) {
-        return;
-    }
-
-    ui->soundCheckBox->setChecked(true);
-    ui->popupCheckBox->setChecked(true);
-    ui->volumeSlider->setValue(75);
-    ui->themeComboBox->setCurrentIndex(0);
-    ui->languageComboBox->setCurrentIndex(0);
-    ui->confirmCloseCheckBox->setChecked(true);
-    ui->statusbar->showMessage("Settings reset", 3000);
-}
-
-void MainWindow::onVolumeChanged(int value) {
-    ui->volumeValueLabel->setText(QString("%1%").arg(value));
-    SoundManager::instance().setVolume(value);
-}
-
-void MainWindow::onThemeChanged(int index) {
-    ThemeManager::instance().applyTheme(static_cast<ThemeManager::Theme>(index));
-}
-
-void MainWindow::onLanguageChanged(int index) {
-    const QString localLanguage = (index == 0) ? "de" : "en";
-    applyLanguage(localLanguage);
-}
-
-void MainWindow::onMonitoringChanged() {
-    LOG4CXX_INFO(logger, "Monitoring status changed");
-
-    if(ui->monitoringCheckBox->isChecked()){
-        LOG4CXX_INFO(logger, "Monitoring start");
-        const int timeOutMs = ui->monitoringSpinTimeout->value() * 60 * 1000;
-        watcher->start(timeOutMs);
-        monitoringUpdateStatus(true);
-    }else{
-        LOG4CXX_INFO(logger, "Monitoring stop");
-        watcher->stop();
-        monitoringUpdateStatus(false);
-    }
-}
-
-void MainWindow::onInactivityDetected() {
-    LOG4CXX_INFO(logger, "Inactivity detected");
-    watcher->stop();
-    monitoringUpdateStatus(false);
-
-    auto* dialog = new InactivityDialog(this);
-
-    connect(dialog, &InactivityDialog::finished,
-            this, [this](int)
-            {
-                onMonitoringChanged();
+    connect(ui->monitoringCheckBox, &QCheckBox::checkStateChanged, this, [this](int state) {
+                emit monitoringChangeRequested(
+                    state == Qt::Checked,
+                    ui->monitoringSpinTimeout->value());
             });
-
-    dialog->setAttribute(Qt::WA_DeleteOnClose);
-    dialog->show();
-    dialog->raise();
-    dialog->activateWindow();
 }
 
-void MainWindow::closeEvent(QCloseEvent *event) {
-    LOG4CXX_INFO(logger, "Close ...");
-    cleanUpTimers();
-
-    if (!activeTimers.isEmpty() && ui->confirmCloseCheckBox->isChecked()) {
-        auto reply = QMessageBox::question(this, "Timer activ",
-                                           QString("%1 timer still running. Are you want to top them?").arg(activeTimers.size()));
-        if (reply != QMessageBox::Yes) {
-            event->ignore();
-            return;
-        }
-    }
-    event->accept();
-}
-
-void MainWindow::refreshActiveTimers() {
-    LOG4CXX_INFO(logger, "Refresh active timer ...");
-    cleanUpTimers();
-
-    ui->activeCountLabel->setText(QString("active timer: %1").arg(activeTimers.size()));
-
-    ui->activeTimersTable->setRowCount(activeTimers.size());
-    for (int index = 0; index < activeTimers.size(); ++index) {
-        TimerDialog *timerDialog = activeTimers[index];
-        if (!timerDialog) {
-            continue;
-        }
-
-        ui->activeTimersTable->setItem(index, 0, new QTableWidgetItem(timerDialog->timerTypeName()));
-        ui->activeTimersTable->setItem(index, 1, new QTableWidgetItem(timerDialog->formattedTime()));
-        ui->activeTimersTable->setItem(index, 2, new QTableWidgetItem(timerDialog->isTimerRunning() ? "running" : "stopped"));
-
-        if (!ui->activeTimersTable->cellWidget(index, 3)) {
-            QPushButton *stopBtn = new QPushButton("stop");
-            stopBtn->setStyleSheet("background-color:#e74c3c;color:white;border-radius:3px;padding:4px;");
-            connect(stopBtn, &QPushButton::clicked, timerDialog, &QDialog::close);
-            ui->activeTimersTable->setCellWidget(index, 3, stopBtn);
-        }
-    }
-}
-
-void MainWindow::stopAllTimers() {
-    LOG4CXX_INFO(logger, "Stop all time");
-    cleanUpTimers();
-
-    if (activeTimers.isEmpty()) {
-        QMessageBox::information(this, "Info", "No active timers");
-        return;
-    }
-
-    auto reply = QMessageBox::Yes;
-    if(ui->popupCheckBox->isChecked()){
-        reply = QMessageBox::question(this, "Stop all timers",
-                                      QString("Do you wanna stop all %1 timer?").arg(activeTimers.size()));
-    }
-
-    if (reply == QMessageBox::Yes) {
-        const auto timers = activeTimers;
-        for (const auto &timer : timers) {
-            if (timer) {
-                timer->close();
-            }
-        }
-        ui->statusbar->showMessage("All timers have stopped", 3000);
-    }
-}
-
-void MainWindow::openTimerDialog(const TimerDialog::TimerType &timerType) {
-    LOG4CXX_INFO(logger, "Open timer dialog");
-    QPointer<TimerDialog> dialog = new TimerDialog(timerType, this);
-    dialog->setPopUpNotification(ui->popupCheckBox->isChecked());
-    dialog->setAttribute(Qt::WA_DeleteOnClose);
-    activeTimers.append(dialog);
-
-    // Remove pointer from list before Qt deletes the object
-    connect(dialog, &TimerDialog::destroyed, this, [this, dialog]() {
-        activeTimers.removeOne(dialog);
-    });
-
-    connect(dialog, &TimerDialog::timerFinished, this, &MainWindow::onTimerFinished);
-
-    dialog->show();
-    refreshActiveTimers();
-    ui->statusbar->showMessage(dialog->timerTypeName() + " started ...", 3000);
-}
-
-void MainWindow::loadSettings() {
-    QSettings s("MyCompany", "HealthProductivityApp");
-    ui->soundCheckBox->setChecked(s.value("sound", true).toBool());
-    ui->popupCheckBox->setChecked(s.value("popup", true).toBool());
-    ui->volumeSlider->setValue(s.value("volume", 75).toInt());
-    ui->themeComboBox->setCurrentIndex(s.value("theme", 0).toInt());
-    ui->languageComboBox->setCurrentIndex(s.value("language", 0).toInt());
-    ui->confirmCloseCheckBox->setChecked(s.value("confirmClose", true).toBool());
-
-    SoundManager::instance().setVolume(ui->volumeSlider->value());
-    SoundManager::instance().setEnabled(ui->themeComboBox->currentIndex());
-}
-
-void MainWindow::connectSignals() {
-    LOG4CXX_INFO(logger, "Connect signals and slots");
-    connect(ui->pomodoroPushButton,&QPushButton::clicked,this,&MainWindow::onPomodoroTimerClicked);
-    connect(ui->stayHydratedPushButton,&QPushButton::clicked,this,&MainWindow::onStayHydratedClicked);
-    connect(ui->freshAirPushButton,&QPushButton::clicked,this,&MainWindow::onFreshAirTimerClicked);
-    connect(ui->workingHoursPushButton,&QPushButton::clicked,this,&MainWindow::onWorkingHourTimerClicked);
-    connect(ui->breakPushButton, &QPushButton::clicked, this, &MainWindow::onBreakTimerClicked);
-    connect(ui->movementPushButton,&QPushButton::clicked,this,&MainWindow::onMovementTimerClicked);
-
-    connect(ui->refreshButton, &QPushButton::clicked, this, &MainWindow::refreshActiveTimers);
-    connect(ui->stopAllButton, &QPushButton::clicked, this, &MainWindow::stopAllTimers);
-
-    connect(ui->saveSettingsButton, &QPushButton::clicked, this, &MainWindow::saveSettings);
-    connect(ui->resetSettingsButton, &QPushButton::clicked, this, &MainWindow::resetSettings);
-    connect(ui->volumeSlider, &QSlider::valueChanged, this, &MainWindow::onVolumeChanged);
-
-    connect(ui->themeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onThemeChanged);
-    connect(ui->soundCheckBox, &QCheckBox::toggled, &SoundManager::instance(), &SoundManager::setEnabled);
-    connect(ui->languageComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onLanguageChanged);
-    connect(ui->monitoringCheckBox, &QCheckBox::checkStateChanged, this, &MainWindow::onMonitoringChanged);
-    connect(watcher, &InactivityWatcher::inactivityDetected, this, &MainWindow::onInactivityDetected);
-}
-
-void MainWindow::cleanUpTimers() {
-    LOG4CXX_INFO(logger, "Remove all destroyed timers from active timers Qlist");
-    activeTimers.erase(
-        std::remove_if(activeTimers.begin(), activeTimers.end(),
-                       [](const QPointer<TimerDialog> &p){ return p.isNull();}),
-        activeTimers.end());
-}
-
-void MainWindow::applyLanguage(const QString &localLanguage) {
-    if(!translator) {
-        LOG4CXX_WARN(logger, "TRANSLATOR IS NULL - creating new one");
-        translator = new QTranslator(this);
-    }
-
-    //remove old translator
-    qApp->removeTranslator(translator);
-
-    //load language file
-    QString languagePath{};
-    if(localLanguage == "de"){
-        languagePath = ":/i18n/HealthAndProductivityAssistant_de.qm";
-    } else {
-        languagePath = ":/i18n/HealthAndProductivityAssistant_en.qm";
-    }
-
-    if(!QFile::exists(languagePath)){
-        LOG4CXX_ERROR(logger, "Error while loading language file");
-        return;
-    }
-
-    if(translator->load(languagePath)){
-        qApp->installTranslator(translator);
-        ui->retranslateUi(this);
-        LOG4CXX_INFO(logger, "Language loaded: " << localLanguage.toStdString());
-    }else {
-        LOG4CXX_WARN(logger, "Could not load translation file: " << localLanguage.toStdString());
-    }
-}
-
-void MainWindow::monitoringUpdateStatus(bool monitoringActive)
+void MainWindow::onActiveTimersChanged()
 {
-    if (monitoringActive) {
-        statusBar()->showMessage("Monitoring activ", 5000);
-    }  else  {
-        statusBar()->showMessage("Monitoring inactiv", 5000);
+    const auto infos = controller->activeTimerInfos();
+    ui->activeCountLabel->setText(QString("active timer: %1").arg(infos.size()));
+    ui->activeTimersTable->setRowCount(infos.size());
+
+    for (int i = 0; i < infos.size(); ++i) {
+        const auto& info = infos[i];
+        ui->activeTimersTable->setItem(i, 0, new QTableWidgetItem(info.typeName));
+        ui->activeTimersTable->setItem(i, 1, new QTableWidgetItem(info.formattedTime));
+        ui->activeTimersTable->setItem(i, 2, new QTableWidgetItem(info.running ? "running" : "stopped"));
+
+        if (!ui->activeTimersTable->cellWidget(i, 3)) {
+            auto* button = new QPushButton("stop");
+            button->setStyleSheet(
+                "background-color:#e74c3c;color:white;"
+                "border-radius:3px;padding:4px;");
+            TimerDialog* dialog = info.dialog;
+            connect(button, &QPushButton::clicked, this,
+                    [this, dialog](){
+                        controller->stopTimer(dialog);
+                    });
+            ui->activeTimersTable->setCellWidget(i, 3, button);
+        }
     }
+}
+
+void MainWindow::onStatusMessage(const QString& msg, int timeoutMs)
+{
+    statusBar()->showMessage(msg, timeoutMs);
+}
+
+void MainWindow::onMonitoringStatusChanged(bool active)
+{
+    // Set the checkbox without signal feedback
+    QSignalBlocker blocker(ui->monitoringCheckBox);
+    ui->monitoringCheckBox->setChecked(active);
+}
+
+void MainWindow::onLanguageChanged(const QString& /*locale*/)
+{
+    ui->retranslateUi(this);
+}
+
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+    LOG4CXX_INFO(logger, "MainWindow closeEvent");
+    closeAccepted = false;
+    emit closeRequested();
+
+    if (closeAccepted) {
+        event->accept();
+    } else {
+        event->ignore();
+    }
+}
+
+void MainWindow::cancelClose()
+{
+    closeAccepted = false;
+}
+
+void MainWindow::acceptClose() {
+    closeAccepted = true;
 }

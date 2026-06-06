@@ -32,10 +32,15 @@ public:
     TimerType getTimerType ()const { return currentType; }
     QString timerTypeName() const;
     QString formattedTime() const;
+    QTimer* getTimer() { return timer; }
+    void start(int intervalMs);
+    void stop();
+    void resetTimer();
 
     void setPopUpNotification(int usePopUp){
         usePopUpNotification = usePopUp;
     }
+
 
 signals:
     void timerFinished(TimerDialog::TimerType type);
