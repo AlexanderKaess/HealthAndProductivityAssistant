@@ -20,7 +20,7 @@ TEST_F(ThemeManagerTest, InstanceIsNotNull)
 
 TEST_F(ThemeManagerTest, SingletonReturnsSameInstance)
 {
-    EXPECT_EQ(themeManager, ThemeManager::instance());
+    EXPECT_EQ(themeManager, &ThemeManager::instance());
 }
 
 TEST_F(ThemeManagerTest, DefaultThemeIsSystem)

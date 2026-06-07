@@ -14,7 +14,7 @@ InactivityWatcher::~InactivityWatcher() {
     stop();
 }
 
-void InactivityWatcher::start(int timeOutMs) {
+void InactivityWatcher::start(int timeOutMs = 0) {
     if (!QCoreApplication::instance()) {
         qWarning("InactivityWatcher::start() — QApplication not initilized");
         return;

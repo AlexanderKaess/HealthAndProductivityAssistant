@@ -562,3 +562,5 @@ TEST_F(AppControllerTest, ChangeSoundEnabled_ToggleMultipleTimes)
     controller->changeSoundEnabled(false);
     controller->changeSoundEnabled(true);
 }
+
+#include "AppControllerTest.moc"

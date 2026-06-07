@@ -20,7 +20,7 @@ TEST_F(SoundManagerTest, InstanceIsNotNull)
 
 TEST_F(SoundManagerTest, SingletonReturnsSameInstance)
 {
-    EXPECT_EQ(soundManager, SoundManager::instance());
+    EXPECT_EQ(soundManager, &SoundManager::instance());
 }
 
 TEST_F(SoundManagerTest, DefaultVolumeIs75)

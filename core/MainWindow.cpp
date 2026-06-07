@@ -20,7 +20,7 @@ MainWindow::MainWindow(AppController* controller, QWidget* parent)
     connect(controller, &AppController::languageChanged, this, &MainWindow::onLanguageChanged);
 
     // connection of settings-model and view
-    const AppSettings* appSettings = controller->getSettings();
+    const AppSettings* appSettings = controller->getAppSettings();
     connect(appSettings, &AppSettings::volumeChanged,
             this, [this](int v){
                 ui->volumeSlider->setValue(v);
