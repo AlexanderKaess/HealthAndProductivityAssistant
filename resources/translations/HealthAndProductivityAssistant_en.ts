@@ -4,7 +4,7 @@
 <context>
     <name>MainWindow</name>
     <message><source>Ready</source><translation>Ready</translation></message>
-    <message><source>Timer stopped</source><translation>Timer finished</translation></message>
+    <message><source>Timer stopped</source><translation>Timer stopped</translation></message>
     <message><source>Timer active</source><translation>Timer active</translation></message>
     <message><source>%1 timers still running. Really quit?</source>
              <translation>%1 timers still running. Really quit?</translation></message>
@@ -15,7 +15,7 @@
     <message><source>break</source><translation>break</translation></message>
     <message><source>stand up and move</source><translation>stand up and move</translation></message>
     <message><source>timer selection</source><translation>timer selection</translation></message>
-    <message><source>overview</source><translation>timer selection</translation></message>
+    <message><source>overview</source><translation>overview</translation></message>
     <message><source>settings</source><translation>settings</translation></message>
     <message><source>select a timer</source><translation>select a timer</translation></message>
     <message><source>type</source><translation>type</translation></message>
