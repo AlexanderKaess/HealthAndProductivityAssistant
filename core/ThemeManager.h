@@ -1,33 +1,28 @@
 #pragma once
 
-#include <log4cxx/logger.h>
 #include <QObject>
 #include <QString>
+#include <log4cxx/logger.h>
 
-class ThemeManager : public QObject
+#include "IThemeManager.h"
+
+class ThemeManager : public QObject, public IThemeManager
 {
     Q_OBJECT
 public:
-    enum Theme {
-        LIGHT,
-        DARK,
-        SYSTEM
-    };
-    Q_ENUM(Theme)
-
     static ThemeManager& instance();
-    void applyTheme(Theme theme);
-    Theme getCurrentTheme() const { return currentTheme; }
+    void applyTheme(IThemeManager::Theme theme) override;
+    IThemeManager::Theme getCurrentTheme() const { return currentTheme; }
 
 signals:
-    void themeChanged(ThemeManager::Theme theme);
+    void themeChanged(IThemeManager::Theme theme);
 
 private:
     explicit ThemeManager(QObject *parent = nullptr);
-    Theme resolveTheme(Theme theme) const;
+    IThemeManager::Theme resolveTheme(IThemeManager::Theme theme) const;
     QString lightStyleSheet() const;
     QString darkStyleSheet() const;
 
     log4cxx::LoggerPtr logger;
-    Theme currentTheme = SYSTEM;
+    IThemeManager::Theme currentTheme = IThemeManager::Theme::SYSTEM;
 };

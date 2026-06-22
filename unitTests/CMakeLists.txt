@@ -12,14 +12,19 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-macro(add_mvc_test TEST_NAME TEST_FILE)
-	add_executable(${TEST_NAME} ${TEST_FILE})
-	target_include_directories(${TEST_NAME} PRIVATE
-		${CMAKE_SOURCE_DIR}/core
-		${CMAKE_SOURCE_DIR}/appController
-		${GTEST_INCLUDE_DIRS}
-	)
-	target_link_libraries(${TEST_NAME} PRIVATE
+set(TEST_SOURCES
+	AppControllerTest.cpp
+	AppSettingsTest.cpp
+	InactivityWatcherTest.cpp
+	MainWindowTest.cpp
+	SoundManagerTest.cpp
+	ThemeManagerTest.cpp
+	TimerDialogTest.cpp
+)
+
+qt_add_executable(HealthAndProductivityAssistant_Tests ${TEST_SOURCES})
+
+target_link_libraries(HealthAndProductivityAssistant_Tests PRIVATE
 		corelib
 		appcontrollerlib
 		Qt6::Widgets
@@ -30,16 +35,32 @@ macro(add_mvc_test TEST_NAME TEST_FILE)
 		GTest::gmock
 		GTest::gmock_main
 		log4cxx
-	)
-	add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
-endmacro()
+)
 
-add_mvc_test(AppControllerTest AppControllerTest.cpp)
-add_mvc_test(AppSettingsTest AppSettingsTest.cpp)
-add_mvc_test(InactivityWatcherTest InactivityWatcherTest.cpp)
-add_mvc_test(MainWindowTest MainWindowTest.cpp)
-add_mvc_test(SoundManagerTest SoundManagerTest.cpp)
-add_mvc_test(ThemeManagerTest ThemeManagerTest.cpp)
-add_mvc_test(TimerDialogTest TimerDialogTest.cpp)
+include(GoogleTest)
+gtest_discover_tests(HealthAndProductivityAssistant_Tests)
+
+# macro(add_mvc_test TEST_NAME TEST_FILE)
+# 	add_executable(${TEST_NAME} ${TEST_FILE})
+# 	target_include_directories(${TEST_NAME} PRIVATE
+# 		${CMAKE_SOURCE_DIR}/core
+# 		${CMAKE_SOURCE_DIR}/appController
+# 		${GTEST_INCLUDE_DIRS}
+# 	)
+# 	target_link_libraries(${TEST_NAME} PRIVATE
+# 		corelib
+# 		appcontrollerlib
+# 		Qt6::Widgets
+# 		Qt6::Multimedia
+# 		Qt6::Test
+# 		GTest::GTest
+# 		GTest::Main
+# 		GTest::gmock
+# 		GTest::gmock_main
+# 		log4cxx
+# 	)
+# 	add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
+# endmacro()
+
 
 message("--------------------")

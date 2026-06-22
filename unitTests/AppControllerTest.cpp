@@ -55,51 +55,18 @@ public:
     void simulateInactivity() { emit inactivityDetected(); }
 };
 
-class MockSoundManager
+class MockSoundManager : public ISoundManager
 {
 public:
-    MOCK_METHOD(void, setVolume, (int), ());
-    MOCK_METHOD(void, setEnabled, (bool), ());
-    MOCK_METHOD(void, playNotification, (), ());
+    MOCK_METHOD(void, setVolume, (int), (override));
+    MOCK_METHOD(void, setEnabled, (bool), (override));
+    MOCK_METHOD(void, playNotification, (), (override));
 };
 
-class MockThemeManager
+class MockThemeManager : public IThemeManager
 {
 public:
-    MOCK_METHOD(void, applyTheme, (int theme), ());
-};
-
-
-class TestableAppController : public AppController
-{
-    Q_OBJECT
-public:
-    explicit TestableAppController(
-        MockAppSettings* injectedSettings,
-        MockInactivityWatcher* injectedWatcher,
-        QObject* parent = nullptr)
-        : AppController(parent)
-    {
-        InactivityWatcher* watcher = getInactivityWatcher();
-        AppSettings* settings = getAppSettings();
-
-        delete settings;
-        delete watcher;
-
-        settings = injectedSettings;
-        settings->setParent(this);
-
-        watcher = injectedWatcher;
-        watcher->setParent(this);
-    }
-
-    int activeTimerCount() const { return getActiveTimerCount(); }
-
-    void injectNullTimer()
-    {
-        auto timers = getActiveTimers();
-        timers.append(QPointer<TimerDialog>(nullptr));
-    }
+    MOCK_METHOD(void, applyTheme, (Theme), (override));
 };
 
 class AppControllerTest : public ::testing::Test
@@ -107,12 +74,16 @@ class AppControllerTest : public ::testing::Test
 protected:
     MockAppSettings* mockSettings = nullptr;
     MockInactivityWatcher* mockWatcher = nullptr;
-    TestableAppController* controller = nullptr;
+    MockSoundManager* mockSound = nullptr;
+    MockThemeManager* mockTheme = nullptr;
+    AppController* controller = nullptr;
 
     void SetUp() override
     {
         mockSettings = new MockAppSettings();
         mockWatcher  = new MockInactivityWatcher();
+        mockSound    = new MockSoundManager();
+        mockTheme    = new MockThemeManager();
 
         ON_CALL(*mockSettings, getVolume()).WillByDefault(Return(50));
         ON_CALL(*mockSettings, getSoundEnabled()).WillByDefault(Return(true));
@@ -121,15 +92,19 @@ protected:
         ON_CALL(*mockSettings, getConfirmClose()).WillByDefault(Return(false));
         ON_CALL(*mockSettings, getLanguageIndex()).WillByDefault(Return(0));
 
-        controller = new TestableAppController(mockSettings, mockWatcher);
+        controller = new AppController(nullptr, mockSettings, mockWatcher, mockSound, mockTheme);
     }
 
     void TearDown() override
     {
         delete controller;
-        controller   = nullptr;
-        mockSettings = nullptr;
-        mockWatcher  = nullptr;
+        // controller   = nullptr;
+
+        // delete mockSettings;
+        // mockSettings = nullptr;
+
+        // delete mockWatcher;
+        // mockWatcher = nullptr;
     }
 
     template<typename T>
@@ -141,7 +116,7 @@ protected:
 
 TEST_F(AppControllerTest, SaveSettings_CallsSettingsSave)
 {
-    EXPECT_CALL(*mockSettings, save()).Times(Exactly(1));
+    EXPECT_CALL(*mockSettings, save()).Times(1);
 
     controller->saveSettings();
 }
@@ -233,7 +208,7 @@ TEST_F(AppControllerTest, ChangeVolume_DoesNotEmitAnySignal)
 
 TEST_F(AppControllerTest, ChangeTheme_CallsSetThemeIndexOnSettings)
 {
-    EXPECT_CALL(*mockSettings, setThemeIndex(1)).Times(Exactly(1));
+    EXPECT_CALL(*mockSettings, setThemeIndex(1)).Times(1);
 
     controller->changeTheme(1);
 }
@@ -440,12 +415,14 @@ TEST_F(AppControllerTest, ActiveTimerInfos_EmptyByDefault)
 
 TEST_F(AppControllerTest, ActiveTimerCount_ZeroByDefault)
 {
-    EXPECT_EQ(controller->activeTimerCount(), 0);
+    EXPECT_EQ(controller->getActiveTimerCount(), 0);
 }
 
 TEST_F(AppControllerTest, CleanUpTimers_RemovesNullPointers_NoCrash)
 {
-    controller->injectNullTimer();
+    auto timers = controller->getActiveTimers();
+    timers.append(QPointer<TimerDialog>(nullptr));
+
     EXPECT_NO_THROW({
         const auto infos = controller->activeTimerInfos();
         EXPECT_TRUE(infos.isEmpty());
@@ -454,9 +431,10 @@ TEST_F(AppControllerTest, CleanUpTimers_RemovesNullPointers_NoCrash)
 
 TEST_F(AppControllerTest, CleanUpTimers_AfterNull_ListIsEmpty)
 {
-    controller->injectNullTimer();
-    controller->injectNullTimer();
-    controller->injectNullTimer();
+    auto timers = controller->getActiveTimers();
+    timers.append(QPointer<TimerDialog>(nullptr));
+    timers.append(QPointer<TimerDialog>(nullptr));
+    timers.append(QPointer<TimerDialog>(nullptr));
 
     const auto infos = controller->activeTimerInfos();
 

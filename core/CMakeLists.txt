@@ -7,6 +7,8 @@ set(CORE_SOURCES
 	InactivityDialog.cpp
 	InactivityWatcher.h
 	InactivityWatcher.cpp
+	ISoundManager.h
+	IThemeManager.h
 	MainWindow.h
 	MainWindow.cpp
 	SoundManager.h

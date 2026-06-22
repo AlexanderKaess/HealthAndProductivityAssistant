@@ -1,20 +1,19 @@
 #pragma once
 
-#include <log4cxx/logger.h>
+#include <QApplication>
+#include <QFile>
+#include <QList>
+#include <QMessageBox>
 #include <QObject>
 #include <QPointer>
-#include <QList>
 #include <QTranslator>
-#include <QApplication>
-#include <QMessageBox>
-#include <QFile>
+#include <log4cxx/logger.h>
 
 #include "AppSettings.h"
-#include "TimerDialog.h"
+#include "IThemeManager.h"
+#include "ISoundManager.h"
 #include "InactivityWatcher.h"
-#include "SoundManager.h"
-#include "ThemeManager.h"
-#include "InactivityDialog.h"
+#include "TimerDialog.h"
 
 class MainWindow;
 
@@ -23,13 +22,17 @@ class AppController : public QObject
     Q_OBJECT
 
 public:
-    explicit AppController(QObject* parent = nullptr);
+    AppController(QObject* parent = nullptr,
+                  AppSettings* appSettings = nullptr,
+                  InactivityWatcher* inactivityWatcher = nullptr,
+                  ISoundManager* soundManager = nullptr,
+                  IThemeManager* themeManager = nullptr);
 
     void start();
 
     AppSettings* getAppSettings() const { return settings; }
     InactivityWatcher* getInactivityWatcher() { return watcher; }
-    QList<QPointer<TimerDialog>> getActiveTimers() {return activeTimers; }
+    QList<QPointer<TimerDialog>>& getActiveTimers() {return activeTimers; }
     int getActiveTimerCount()const { return activeTimers.size(); }
 
     struct TimerInfo {
@@ -67,14 +70,18 @@ signals:
     void timerFinishedNotification(const QString& timerName);
     void languageChanged(const QString& locale);
 
+protected:
+    AppSettings* settings { nullptr };
+    InactivityWatcher* watcher { nullptr };
+    ISoundManager* soundManager { nullptr };
+    IThemeManager* themeManager { nullptr };
+
 private:
     void cleanUpTimers();
     void applyLanguage(const QString& locale);
     void connectViewSignals();
 
     log4cxx::LoggerPtr logger;
-    AppSettings* settings { nullptr };
-    InactivityWatcher* watcher { nullptr };
     QTranslator* translator { nullptr };
     MainWindow* view { nullptr };
     QList<QPointer<TimerDialog>> activeTimers{};

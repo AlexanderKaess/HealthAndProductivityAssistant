@@ -21,7 +21,7 @@ ThemeManager::ThemeManager(QObject *parent)
             }});
 }
 
-ThemeManager::Theme ThemeManager::resolveTheme(Theme theme) const {
+IThemeManager::Theme ThemeManager::resolveTheme(IThemeManager::Theme theme) const {
     if (theme != SYSTEM) {
         return theme;
     }
@@ -30,11 +30,11 @@ ThemeManager::Theme ThemeManager::resolveTheme(Theme theme) const {
     return (scheme == Qt::ColorScheme::Dark) ? DARK : LIGHT;
 }
 
-void ThemeManager::applyTheme(Theme theme)
+void ThemeManager::applyTheme(IThemeManager::Theme theme)
 {
     LOG4CXX_INFO(logger, "Change Theme");
     currentTheme = theme;
-    const Theme effective = resolveTheme(theme);
+    const IThemeManager::Theme effective = resolveTheme(theme);
     qApp->setStyleSheet(
         effective == DARK ? darkStyleSheet() : lightStyleSheet()
         );

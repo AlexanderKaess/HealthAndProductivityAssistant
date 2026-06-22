@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
     // set dark theme as default
     ThemeManager::instance().applyTheme(ThemeManager::Theme::DARK);
 
-
     // load configuration
     QString configPath = QCoreApplication::applicationDirPath() + "/log4cxx.xml";
     log4cxx::xml::DOMConfigurator::configure(configPath.toStdString());

@@ -1,12 +1,22 @@
 #include "AppController.h"
 #include "MainWindow.h"
+#include "InactivityDialog.h"
 
-AppController::AppController(QObject* parent)
+#include "SoundManager.h"
+#include "ThemeManager.h"
+
+AppController::AppController(QObject* parent,
+                             AppSettings* appSettings,
+                             InactivityWatcher* inactivityWatcher,
+                             ISoundManager* sManager,
+                             IThemeManager* tManager)
     : QObject(parent)
     , logger(log4cxx::Logger::getLogger("HealthLogger.AppController"))
 {
-    settings = new AppSettings(this);
-    watcher = new InactivityWatcher(this);
+    settings = appSettings ? appSettings : new AppSettings(this);
+    watcher = inactivityWatcher ? inactivityWatcher : new InactivityWatcher(this);
+    soundManager = sManager ? sManager : &SoundManager::instance();
+    themeManager = tManager ? tManager : &ThemeManager::instance();
     translator = new QTranslator(this);
 }
 
@@ -16,9 +26,9 @@ void AppController::start()
 
     settings->load();
 
-    SoundManager::instance().setVolume(settings->getVolume());
-    SoundManager::instance().setEnabled(settings->getSoundEnabled());
-    ThemeManager::instance().applyTheme(static_cast<ThemeManager::Theme>(settings->getThemeIndex()));
+    soundManager->setVolume(settings->getVolume());
+    soundManager->setEnabled(settings->getSoundEnabled());
+    themeManager->applyTheme(static_cast<IThemeManager::Theme>(settings->getThemeIndex()));
 
     view = new MainWindow(this);
     connectViewSignals();
@@ -116,7 +126,7 @@ void AppController::onTimerDestroyed()
 
 void AppController::onTimerFinished()
 {
-    SoundManager::instance().playNotification();
+    soundManager->playNotification();
 }
 
 void AppController::saveSettings()
@@ -136,13 +146,13 @@ void AppController::resetSettings()
 void AppController::changeVolume(int percent)
 {
     settings->setVolume(percent);
-    SoundManager::instance().setVolume(percent);
+    soundManager->setVolume(percent);
 }
 
 void AppController::changeTheme(int index)
 {
     settings->setThemeIndex(index);
-    ThemeManager::instance().applyTheme(static_cast<ThemeManager::Theme>(index));
+    themeManager->applyTheme(static_cast<IThemeManager::Theme>(index));
 }
 
 void AppController::changeLanguage(int index)
@@ -155,7 +165,7 @@ void AppController::changeLanguage(int index)
 void AppController::changeSoundEnabled(bool enabled)
 {
     settings->setSoundEnabled(enabled);
-    SoundManager::instance().setEnabled(enabled);
+    soundManager->setEnabled(enabled);
 }
 
 void AppController::applyLanguage(const QString& locale)
@@ -222,8 +232,10 @@ void AppController::requestClose()
         auto reply = QMessageBox::question(
             view, "Timer active",
             QString("%1 timer still running. Stop them?").arg(activeTimers.size()));
-        if (reply != QMessageBox::Yes)
+        if (reply != QMessageBox::Yes) {
             view->cancelClose();
+            return;
+        }
     }
     view->acceptClose();
 }

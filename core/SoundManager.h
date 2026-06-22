@@ -1,25 +1,27 @@
 #pragma once
 
-#include <log4cxx/logger.h>
-#include <QObject>
-#include <QtMultimedia/QtMultimedia>
-#include <QUrl>
-#include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QMediaPlayer>
+#include <QObject>
+#include <QUrl>
+#include <QtMultimedia/QtMultimedia>
+#include <log4cxx/logger.h>
 
-class SoundManager : public QObject
+#include "ISoundManager.h"
+
+class SoundManager : public QObject, public ISoundManager
 {
     Q_OBJECT
 public:
     static SoundManager &instance();
 
-    void setVolume(int percent);
+    void setVolume(int percent) override;
     int getVolume() const { return volumePercent; }
-    void setEnabled(bool enabled);
+    void setEnabled(bool enabled) override;
     int getEnabled() const { return isEnabled; }
 
 public slots:
-    void playNotification();
+    void playNotification() override;
 
 private:
     explicit SoundManager(QObject *parent = nullptr);
