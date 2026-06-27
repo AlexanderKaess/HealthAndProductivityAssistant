@@ -11,33 +11,6 @@
 using ::testing::Return;
 using ::testing::NiceMock;
 
-// class MockAppController : public AppController
-// {
-//     Q_OBJECT
-
-// public:
-//     explicit MockAppController(QObject* parent = nullptr) : AppController(parent) {}
-
-//     MOCK_METHOD(QList<TimerInfo>, activeTimerInfos, (), (const));
-//     MOCK_METHOD(void, stopTimer, (TimerDialog*), ());
-//     MOCK_METHOD(const AppSettings*, getAppSettings, (), (const));
-// };
-
-// class MockAppSettings : public AppSettings
-// {
-//     Q_OBJECT
-
-// public:
-//     explicit MockAppSettings(QObject* parent = nullptr) : AppSettings(parent) {}
-
-//     MOCK_METHOD(int, getVolume, (), (const));
-//     MOCK_METHOD(bool, getSoundEnabled, (), (const));
-//     MOCK_METHOD(bool, getPopupEnabled, (), (const));
-//     MOCK_METHOD(bool, getConfirmClose, (), (const));
-//     MOCK_METHOD(int, getThemeIndex, (), (const));
-//     MOCK_METHOD(int, getLanguageIndex,(), (const));
-// };
-
 class MainWindowTest : public ::testing::Test
 {
 protected:

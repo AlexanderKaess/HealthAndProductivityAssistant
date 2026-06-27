@@ -57,6 +57,7 @@ class MockThemeManager : public IThemeManager
 public:
     MOCK_METHOD(void, applyTheme, (Theme), (override));
 };
+
 class MockAppController : public AppController
 {
     Q_OBJECT
