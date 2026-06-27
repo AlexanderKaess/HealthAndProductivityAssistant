@@ -9,8 +9,7 @@
 #include <QList>
 
 #include "AppController.h"
-#include "AppSettings.h"
-#include "InactivityWatcher.h"
+#include "Mocks.h"
 
 using ::testing::_;
 using ::testing::Return;
@@ -20,54 +19,54 @@ using ::testing::NiceMock;
 using ::testing::StrictMock;
 using ::testing::InSequence;
 
-class MockAppSettings : public AppSettings
-{
-    Q_OBJECT
-public:
-    explicit MockAppSettings(QObject* parent = nullptr) : AppSettings(parent) {}
+// class MockAppSettings : public AppSettings
+// {
+//     Q_OBJECT
+// public:
+//     explicit MockAppSettings(QObject* parent = nullptr) : AppSettings(parent) {}
 
-    MOCK_METHOD(void, load, ());
-    MOCK_METHOD(void, save, ());
-    MOCK_METHOD(void, reset, ());
+//     MOCK_METHOD(void, load, ());
+//     MOCK_METHOD(void, save, ());
+//     MOCK_METHOD(void, reset, ());
 
-    MOCK_METHOD(int, getVolume, ());
-    MOCK_METHOD(bool, getSoundEnabled, ());
-    MOCK_METHOD(int, getThemeIndex, ());
-    MOCK_METHOD(bool, getPopupEnabled, ());
-    MOCK_METHOD(bool, getConfirmClose, ());
-    MOCK_METHOD(int, getLanguageIndex, ());
+//     MOCK_METHOD(int, getVolume, ());
+//     MOCK_METHOD(bool, getSoundEnabled, ());
+//     MOCK_METHOD(int, getThemeIndex, ());
+//     MOCK_METHOD(bool, getPopupEnabled, ());
+//     MOCK_METHOD(bool, getConfirmClose, ());
+//     MOCK_METHOD(int, getLanguageIndex, ());
 
-    MOCK_METHOD(void, setVolume, (int) );
-    MOCK_METHOD(void, setSoundEnabled, (bool));
-    MOCK_METHOD(void, setThemeIndex, (int));
-    MOCK_METHOD(void, setLanguageIndex, (int));
-};
+//     MOCK_METHOD(void, setVolume, (int) );
+//     MOCK_METHOD(void, setSoundEnabled, (bool));
+//     MOCK_METHOD(void, setThemeIndex, (int));
+//     MOCK_METHOD(void, setLanguageIndex, (int));
+// };
 
-class MockInactivityWatcher : public InactivityWatcher
-{
-    Q_OBJECT
-public:
-    explicit MockInactivityWatcher(QObject* parent = nullptr) : InactivityWatcher(parent) {}
+// class MockInactivityWatcher : public InactivityWatcher
+// {
+//     Q_OBJECT
+// public:
+//     explicit MockInactivityWatcher(QObject* parent = nullptr) : InactivityWatcher(parent) {}
 
-    MOCK_METHOD(void, start, (int msec));
-    MOCK_METHOD(void, stop, ());
+//     MOCK_METHOD(void, start, (int msec));
+//     MOCK_METHOD(void, stop, ());
 
-    void simulateInactivity() { emit inactivityDetected(); }
-};
+//     void simulateInactivity() { emit inactivityDetected(); }
+// };
 
-class MockSoundManager : public ISoundManager
-{
-public:
-    MOCK_METHOD(void, setVolume, (int), (override));
-    MOCK_METHOD(void, setEnabled, (bool), (override));
-    MOCK_METHOD(void, playNotification, (), (override));
-};
+// class MockSoundManager : public ISoundManager
+// {
+// public:
+//     MOCK_METHOD(void, setVolume, (int), (override));
+//     MOCK_METHOD(void, setEnabled, (bool), (override));
+//     MOCK_METHOD(void, playNotification, (), (override));
+// };
 
-class MockThemeManager : public IThemeManager
-{
-public:
-    MOCK_METHOD(void, applyTheme, (Theme), (override));
-};
+// class MockThemeManager : public IThemeManager
+// {
+// public:
+//     MOCK_METHOD(void, applyTheme, (Theme), (override));
+// };
 
 class AppControllerTest : public ::testing::Test
 {

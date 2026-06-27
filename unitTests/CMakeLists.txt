@@ -17,6 +17,8 @@ set(TEST_SOURCES
 	AppSettingsTest.cpp
 	InactivityWatcherTest.cpp
 	MainWindowTest.cpp
+	Mocks.cpp
+	Mocks.h
 	SoundManagerTest.cpp
 	ThemeManagerTest.cpp
 	TimerDialogTest.cpp
