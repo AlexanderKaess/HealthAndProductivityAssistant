@@ -14,10 +14,10 @@ class InactivityWatcher : public QObject
 
 public:
     explicit InactivityWatcher(QObject* parent = nullptr);
-    ~InactivityWatcher() override;
+    virtual ~InactivityWatcher() override;
 
-    void start(int timeOutMs);
-    void stop();
+    virtual void start(int timeOutMs);
+    virtual void stop();
     bool isRunning() const { return running; }
 
 signals:

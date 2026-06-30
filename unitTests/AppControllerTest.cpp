@@ -22,18 +22,18 @@ using ::testing::InSequence;
 class AppControllerTest : public ::testing::Test
 {
 protected:
-    MockAppSettings* mockSettings = nullptr;
-    MockInactivityWatcher* mockWatcher = nullptr;
-    MockSoundManager* mockSound = nullptr;
-    MockThemeManager* mockTheme = nullptr;
+    NiceMock<MockAppSettings>* mockSettings = nullptr;
+    NiceMock<MockInactivityWatcher>* mockWatcher  = nullptr;
+    NiceMock<MockSoundManager>* mockSound = nullptr;
+    NiceMock<MockThemeManager>* mockTheme = nullptr;
     AppController* controller = nullptr;
 
     void SetUp() override
     {
-        mockSettings = new MockAppSettings();
-        mockWatcher  = new MockInactivityWatcher();
-        mockSound    = new MockSoundManager();
-        mockTheme    = new MockThemeManager();
+        mockSettings = new NiceMock<MockAppSettings>();
+        mockWatcher = new NiceMock<MockInactivityWatcher>();
+        mockSound = new NiceMock<MockSoundManager>();
+        mockTheme = new NiceMock<MockThemeManager>();
 
         ON_CALL(*mockSettings, getVolume()).WillByDefault(Return(50));
         ON_CALL(*mockSettings, getSoundEnabled()).WillByDefault(Return(true));
@@ -48,13 +48,19 @@ protected:
     void TearDown() override
     {
         delete controller;
-        // controller   = nullptr;
+        controller = nullptr;
 
-        // delete mockSettings;
-        // mockSettings = nullptr;
+        delete mockWatcher;
+        mockWatcher = nullptr;
 
-        // delete mockWatcher;
-        // mockWatcher = nullptr;
+        delete mockSound;
+        mockSound = nullptr;
+
+        delete mockTheme;
+        mockTheme = nullptr;
+
+        delete mockSettings;
+        mockSettings = nullptr;
     }
 
     template<typename T>

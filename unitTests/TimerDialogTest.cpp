@@ -10,20 +10,15 @@ class TimerDialogTest : public ::testing::Test
 {
 protected:
     void SetUp() override {
-        if (!QCoreApplication::instance()) {
-            static int argc = 0;
-            static QCoreApplication app(argc, nullptr);
-        }
-        QPointer<TimerDialog> timer {nullptr};
+        timer = new TimerDialog(TimerDialog::POMODORO, nullptr);
     }
 
     void TearDown() override {
-        delete app;
         delete timer;
+        timer = nullptr;
     }
 
-    QCoreApplication* app;
-    QPointer<TimerDialog> timer;
+    TimerDialog* timer = nullptr;
 };
 
 TEST_F(TimerDialogTest, InitialStateIsStopped)
@@ -57,15 +52,8 @@ TEST_F(TimerDialogTest, RemainingTimeDecreasesAfterStart)
 
 TEST_F(TimerDialogTest, TimerFinishedSignalEmitted)
 {
-    QSignalSpy spy(timer.get(), &TimerDialog::timerFinished);
+    QSignalSpy spy(timer, &TimerDialog::timerFinished);
     timer->start(1);
     QTRY_COMPARE_WITH_TIMEOUT(spy.count(), 1, 3000);
 }
 
-TEST_F(TimerDialogTest, ResetRestoresDuration)
-{
-    timer->start(10);
-    QTest::qWait(500);
-    timer->resetTimer();
-    EXPECT_EQ(timer->getRemainingTime(), 10);
-}

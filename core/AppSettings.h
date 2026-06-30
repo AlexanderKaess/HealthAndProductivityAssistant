@@ -10,23 +10,23 @@ class AppSettings : public QObject
 public:
     explicit AppSettings(QObject* parent = nullptr);
 
-    bool getSoundEnabled() const { return soundEnabled; }
-    bool getPopupEnabled() const { return popupEnabled; }
-    bool getConfirmClose() const { return confirmClose; }
-    int  getVolume() const { return volume; }
-    int  getThemeIndex() const { return themeIndex; }
-    int  getLanguageIndex() const { return languageIndex; }
+    virtual bool getSoundEnabled() const { return soundEnabled; }
+    virtual bool getPopupEnabled() const { return popupEnabled; }
+    virtual bool getConfirmClose() const { return confirmClose; }
+    virtual int getVolume() const { return volume; }
+    virtual int getThemeIndex() const { return themeIndex; }
+    virtual int getLanguageIndex() const { return languageIndex; }
 
-    void setSoundEnabled(bool enabled);
-    void setPopupEnabled(bool enabled);
-    void setConfirmClose(bool confirm);
-    void setVolume(int volume);
-    void setThemeIndex(int index);
-    void setLanguageIndex(int language);
+    virtual void setSoundEnabled(bool enabled);
+    virtual void setPopupEnabled(bool enabled);
+    virtual void setConfirmClose(bool confirm);
+    virtual void setVolume(int volume);
+    virtual void setThemeIndex(int index);
+    virtual void setLanguageIndex(int language);
 
-    void load();
-    void save() const;
-    void reset();
+    virtual void load();
+    virtual void save() const;
+    virtual void reset();
 
 signals:
     void soundEnabledChanged(bool enabled);

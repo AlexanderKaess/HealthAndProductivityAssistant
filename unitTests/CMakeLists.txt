@@ -13,6 +13,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(TEST_SOURCES
+	gmain.cpp
 	AppControllerTest.cpp
 	AppSettingsTest.cpp
 	InactivityWatcherTest.cpp
@@ -33,7 +34,6 @@ target_link_libraries(HealthAndProductivityAssistant_Tests PRIVATE
 		Qt6::Multimedia
 		Qt6::Test
 		GTest::GTest
-		GTest::Main
 		GTest::gmock
 		GTest::gmock_main
 		log4cxx
@@ -41,28 +41,5 @@ target_link_libraries(HealthAndProductivityAssistant_Tests PRIVATE
 
 include(GoogleTest)
 gtest_discover_tests(HealthAndProductivityAssistant_Tests)
-
-# macro(add_mvc_test TEST_NAME TEST_FILE)
-# 	add_executable(${TEST_NAME} ${TEST_FILE})
-# 	target_include_directories(${TEST_NAME} PRIVATE
-# 		${CMAKE_SOURCE_DIR}/core
-# 		${CMAKE_SOURCE_DIR}/appController
-# 		${GTEST_INCLUDE_DIRS}
-# 	)
-# 	target_link_libraries(${TEST_NAME} PRIVATE
-# 		corelib
-# 		appcontrollerlib
-# 		Qt6::Widgets
-# 		Qt6::Multimedia
-# 		Qt6::Test
-# 		GTest::GTest
-# 		GTest::Main
-# 		GTest::gmock
-# 		GTest::gmock_main
-# 		log4cxx
-# 	)
-# 	add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
-# endmacro()
-
 
 message("--------------------")

@@ -15,21 +15,21 @@ class MockAppSettings : public AppSettings
 public:
     explicit MockAppSettings(QObject* parent = nullptr) : AppSettings(parent) {}
 
-    MOCK_METHOD(void, load, ());
-    MOCK_METHOD(void, save, ());
-    MOCK_METHOD(void, reset, ());
+    MOCK_METHOD(void, load, (), (override));
+    MOCK_METHOD(void, save, (), (const, override));
+    MOCK_METHOD(void, reset, (), (override));
 
-    MOCK_METHOD(int, getVolume, ());
-    MOCK_METHOD(bool, getSoundEnabled, ());
-    MOCK_METHOD(int, getThemeIndex, ());
-    MOCK_METHOD(bool, getPopupEnabled, ());
-    MOCK_METHOD(bool, getConfirmClose, ());
-    MOCK_METHOD(int, getLanguageIndex, ());
+    MOCK_METHOD(int, getVolume, (), (const, override));
+    MOCK_METHOD(bool, getSoundEnabled, (), (const, override));
+    MOCK_METHOD(int, getThemeIndex, (), (const, override));
+    MOCK_METHOD(bool, getPopupEnabled, (), (const, override));
+    MOCK_METHOD(bool, getConfirmClose, (), (const, override));
+    MOCK_METHOD(int, getLanguageIndex, (), (const, override));
 
-    MOCK_METHOD(void, setVolume, (int) );
-    MOCK_METHOD(void, setSoundEnabled, (bool));
-    MOCK_METHOD(void, setThemeIndex, (int));
-    MOCK_METHOD(void, setLanguageIndex, (int));
+    MOCK_METHOD(void, setVolume, (int), (override));
+    MOCK_METHOD(void, setSoundEnabled, (bool), (override));
+    MOCK_METHOD(void, setThemeIndex, (int), (override));
+    MOCK_METHOD(void, setLanguageIndex, (int), (override));
 };
 
 class MockInactivityWatcher : public InactivityWatcher
@@ -38,8 +38,8 @@ class MockInactivityWatcher : public InactivityWatcher
 public:
     explicit MockInactivityWatcher(QObject* parent = nullptr) : InactivityWatcher(parent) {}
 
-    MOCK_METHOD(void, start, (int msec));
-    MOCK_METHOD(void, stop, ());
+    MOCK_METHOD(void, start, (int msec), (override));
+    MOCK_METHOD(void, stop, (), (override));
 
     void simulateInactivity() { emit inactivityDetected(); }
 };
